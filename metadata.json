@@ -1,0 +1,9 @@
+{
+  "name": "Cuidapp+ Senior Care",
+  "description": "A comprehensive senior care and safety application featuring health monitoring, family connectivity, emergency SOS, and AI-powered voice assistance.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
+}

@@ -1,0 +1,103 @@
+
+import React from 'react';
+import { HashRouter as Router, Routes, Route, useNavigate, useLocation, Navigate } from 'react-router-dom';
+import HomePage from './components/HomePage';
+import HealthMonitoringPage from './components/HealthMonitoringPage';
+import FamilyDashboardPage from './components/FamilyDashboardPage';
+import TripBookingPage from './components/TripBookingPage';
+import ActiveTripPage from './components/ActiveTripPage';
+import SOSAlertPage from './components/SOSAlertPage';
+import AssistantConfigPage from './components/AssistantConfigPage';
+import AccountPage from './components/AccountPage';
+import LiveAssistant from './components/LiveAssistant';
+import HealthAdvice from './components/HealthAdvice';
+import MedicalRecordPage from './components/MedicalRecordPage';
+import AssistantQRPage from './components/AssistantQRPage';
+import RoleSelectorPage from './components/RoleSelectorPage';
+import LoginPage from './components/LoginPage';
+import SignUpPage from './components/SignUpPage';
+import PlanSelectionPage from './components/PlanSelectionPage';
+import OnboardingMedical from './components/OnboardingMedical';
+import MemberHomePage from './components/MemberHomePage';
+import AssistantDashboardPage from './components/AssistantDashboardPage';
+import AssistantEarningsPage from './components/AssistantEarningsPage';
+import SearchingAssistantPage from './components/SearchingAssistantPage';
+import EmergencyDetailView from './components/EmergencyDetailView';
+import TripSummaryPage from './components/TripSummaryPage';
+import CheckoutPage from './components/CheckoutPage';
+import { BottomNav, SOSButton } from './components/Layout';
+
+const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const location = useLocation();
+  const role = localStorage.getItem('cuidapp_role');
+  
+  const hideChrome = [
+    '/', 
+    '/login',
+    '/signup',
+    '/select-plan',
+    '/onboarding-medical',
+    '/checkout',
+    '/sos-alert', 
+    '/live-chat', 
+    '/emergency-qr', 
+    '/searching-assistant',
+    '/emergency-detail',
+    '/trip-summary'
+  ].includes(location.pathname);
+  
+  if (!role && !['/', '/login', '/signup', '/select-plan'].includes(location.pathname)) {
+    return <Navigate to="/" replace />;
+  }
+
+  return (
+    <div className="min-h-screen bg-white max-w-[480px] mx-auto relative shadow-2xl overflow-hidden flex flex-col border-x border-slate-100 text-dark-blue">
+      <div className="flex-1 overflow-y-auto relative">
+        {children}
+        {!hideChrome && role === 'senior' && <SOSButton />}
+      </div>
+      {!hideChrome && <BottomNav />}
+    </div>
+  );
+};
+
+const App: React.FC = () => {
+  return (
+    <Router>
+      <MainLayout>
+        <Routes>
+          <Route path="/" element={<RoleSelectorPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/select-plan" element={<PlanSelectionPage />} />
+          <Route path="/onboarding-medical" element={<OnboardingMedical />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
+          
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/member-home" element={<MemberHomePage />} />
+          <Route path="/health" element={<HealthMonitoringPage />} />
+          <Route path="/medical-record" element={<MedicalRecordPage />} />
+          <Route path="/family" element={<FamilyDashboardPage />} />
+          <Route path="/trip-booking" element={<TripBookingPage />} />
+          <Route path="/searching-assistant" element={<SearchingAssistantPage />} />
+          <Route path="/active-trip" element={<ActiveTripPage />} />
+          <Route path="/trip-summary" element={<TripSummaryPage />} />
+          <Route path="/sos-alert" element={<SOSAlertPage />} />
+          <Route path="/assistant-config" element={<AssistantConfigPage />} />
+          <Route path="/account" element={<AccountPage />} />
+          <Route path="/live-chat" element={<LiveAssistant />} />
+          <Route path="/health-advice" element={<HealthAdvice />} />
+          
+          <Route path="/assistant-home" element={<AssistantDashboardPage />} />
+          <Route path="/assistant-earnings" element={<AssistantEarningsPage />} />
+          <Route path="/emergency-qr" element={<AssistantQRPage />} />
+          <Route path="/emergency-detail" element={<EmergencyDetailView />} />
+          
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </MainLayout>
+    </Router>
+  );
+};
+
+export default App;
