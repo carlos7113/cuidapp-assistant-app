@@ -1,9 +1,38 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const RoleSelectorPage: React.FC = () => {
   const navigate = useNavigate();
+
+  // 🛡️ PROTOCOLO DE LIMPIEZA DE EMERGENCIA - CTO SENIOR
+  // Ejecuta limpieza TOTAL de datos fantasma al cargar la pantalla de selección de rol
+  // Solo preserva datos si el usuario es un socio premium registrado
+  useEffect(() => {
+    const isRegistered = localStorage.getItem('cuidapp_is_registered') === 'true';
+
+    // Si NO es un socio registrado, limpiar TODOS los datos de invitado
+    if (!isRegistered) {
+      // Limpieza de datos de identidad
+      localStorage.removeItem('cuidapp_user_name');
+      localStorage.removeItem('cuidapp_guest_data');
+      localStorage.removeItem('cuidapp_special_needs');
+
+      // Limpieza de datos de viaje
+      localStorage.removeItem('cuidapp_active_trip');
+      localStorage.removeItem('cuidapp_trip_origin');
+      localStorage.removeItem('cuidapp_trip_destination');
+
+      // Limpieza de datos médicos temporales
+      localStorage.removeItem('cuidapp_blood_type');
+      localStorage.removeItem('cuidapp_allergies');
+      localStorage.removeItem('cuidapp_medication');
+
+      console.log('🧹 Limpieza de emergencia ejecutada: datos de invitado eliminados');
+    } else {
+      console.log('✅ Usuario registrado detectado: datos preservados');
+    }
+  }, []); // Solo se ejecuta una vez al montar
 
   const selectRole = (role: 'senior' | 'assistant' | 'family') => {
     localStorage.setItem('cuidapp_role', role);

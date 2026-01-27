@@ -13,7 +13,8 @@ const HomePage: React.FC = () => {
       return;
     }
 
-    // BLINDAJE DE PANTALLA: Reset forzado de estados para Invitado
+    // 🛡️ BLINDAJE DE PANTALLA: Reset forzado de estados para Invitado
+    // Garantiza que la UI siempre se muestre limpia sin datos residuales
     setNombre('');
     setOtherNeedText('');
     setUserData({
@@ -27,17 +28,22 @@ const HomePage: React.FC = () => {
     });
 
     // Limpieza adicional de localStorage para evitar datos 'fantasmas'
+    // Esta limpieza es redundante con RoleSelectorPage pero actúa como segunda capa de seguridad
     localStorage.removeItem('cuidapp_user_name');
     localStorage.removeItem('cuidapp_guest_data');
     localStorage.removeItem('cuidapp_special_needs');
+
+    console.log('🧼 HomePage: Estados de invitado reiniciados a valores vacíos');
   }, [navigate]);
 
+  // 🎯 INICIALIZACIÓN DE ESTADOS - SIEMPRE VACÍOS PARA INVITADOS
+  // Estos valores iniciales garantizan que la UI nunca muestre datos pre-llenados
   const [nombre, setNombre] = useState('');
   const [userData, setUserData] = useState({
     name: '',
     role: 'guest',
     status: 'guest',
-    needs: [],
+    needs: [] as string[],
     bloodType: '',
     allergies: '',
     medication: ''
