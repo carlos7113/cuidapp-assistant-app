@@ -65,16 +65,32 @@ const TripBookingPage: React.FC = () => {
     setIsMember(registered);
     setMemberPlan(plan);
 
-    // Recuperar estado de familiar y pago
-    const savedFamName = localStorage.getItem('cuidapp_familiar_name');
-    const savedFamPhone = localStorage.getItem('cuidapp_familiar_phone');
-    const savedShare = localStorage.getItem('cuidapp_familiar_share') === 'true';
-    const savedPay = localStorage.getItem('cuidapp_payment_method');
+    // 🔒 SEGUNDA CAPA DE SEGURIDAD: Limpieza de datos de familiares para invitados
+    if (!registered) {
+      // Forzar inicialización vacía para invitados
+      setFamilyContact({ name: '', phone: '' });
+      setShareFamily(false);
 
-    if (savedFamName || savedFamPhone) {
-      setFamilyContact({ name: savedFamName || '', phone: savedFamPhone || '' });
+      // Eliminar cualquier dato residual de familiares
+      localStorage.removeItem('cuidapp_familiar_name');
+      localStorage.removeItem('cuidapp_familiar_phone');
+      localStorage.removeItem('cuidapp_familiar_share');
+
+      console.log('🔒 TripBookingPage: Datos de familiares limpiados para invitado');
+    } else {
+      // Solo recuperar datos si es usuario registrado
+      const savedFamName = localStorage.getItem('cuidapp_familiar_name');
+      const savedFamPhone = localStorage.getItem('cuidapp_familiar_phone');
+      const savedShare = localStorage.getItem('cuidapp_familiar_share') === 'true';
+
+      if (savedFamName || savedFamPhone) {
+        setFamilyContact({ name: savedFamName || '', phone: savedFamPhone || '' });
+      }
+      setShareFamily(savedShare);
     }
-    setShareFamily(savedShare);
+
+    // Recuperar método de pago (permitido para todos)
+    const savedPay = localStorage.getItem('cuidapp_payment_method');
     if (savedPay) setPaymentMethod(savedPay as 'cash' | 'card');
 
     // Recuperar estado de viaje activo si existe

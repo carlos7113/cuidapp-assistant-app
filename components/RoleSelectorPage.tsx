@@ -23,12 +23,21 @@ const RoleSelectorPage: React.FC = () => {
       localStorage.removeItem('cuidapp_trip_origin');
       localStorage.removeItem('cuidapp_trip_destination');
 
+      // 🔒 PRIVACIDAD CRÍTICA: Limpieza de datos de familiares
+      localStorage.removeItem('cuidapp_familiar_name');
+      localStorage.removeItem('cuidapp_familiar_phone');
+      localStorage.removeItem('cuidapp_familiar_share');
+
       // Limpieza de datos médicos temporales
       localStorage.removeItem('cuidapp_blood_type');
       localStorage.removeItem('cuidapp_allergies');
       localStorage.removeItem('cuidapp_medication');
 
-      console.log('🧹 Limpieza de emergencia ejecutada: datos de invitado eliminados');
+      // Limpieza de datos de pago
+      localStorage.removeItem('cuidapp_payment_method');
+
+      console.log('🧹 Limpieza de emergencia ejecutada: TODOS los datos de invitado eliminados');
+      console.log('🔒 Datos de familiares eliminados por seguridad');
     } else {
       console.log('✅ Usuario registrado detectado: datos preservados');
     }
