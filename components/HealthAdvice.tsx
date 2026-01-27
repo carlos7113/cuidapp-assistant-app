@@ -33,7 +33,7 @@ const HealthAdvice: React.FC = () => {
         >
           <span className="material-symbols-outlined text-3xl font-bold">arrow_back_ios_new</span>
         </button>
-        <h1 className="text-xl font-black italic tracking-tight text-slate-900 dark:text-white">Consejo de Salud</h1>
+        <h1 className="text-xl font-black tracking-tight text-slate-900 dark:text-white">Consejo de Salud</h1>
         <div className="size-14"></div>
       </header>
 
@@ -41,7 +41,7 @@ const HealthAdvice: React.FC = () => {
         <div className="bg-primary/5 dark:bg-primary/10 rounded-[2.5rem] p-8 border border-primary/20 shadow-inner">
           <div className="flex items-center gap-3 mb-6">
             <span className="material-symbols-outlined text-primary text-4xl fill-1">psychiatry</span>
-            <h2 className="text-xl font-black text-primary uppercase italic tracking-wider">Cuida Inteligente</h2>
+            <h2 className="text-xl font-black text-primary uppercase tracking-wider">Cuida Inteligente</h2>
           </div>
           <p className="text-base text-slate-600 dark:text-slate-400 mb-8 font-medium leading-relaxed">
             Escribe tus dudas de salud. Te daré una orientación basada en razonamiento avanzado.
@@ -55,7 +55,7 @@ const HealthAdvice: React.FC = () => {
           <button 
             onClick={getAdvice}
             disabled={isLoading}
-            className="w-full mt-6 bg-primary text-white py-6 rounded-2xl font-black text-xl shadow-2xl shadow-primary/30 flex items-center justify-center gap-4 active:scale-95 transition-all uppercase italic"
+            className="w-full mt-6 bg-primary text-white py-6 rounded-2xl font-black text-xl shadow-2xl shadow-primary/30 flex items-center justify-center gap-4 active:scale-95 transition-all uppercase"
           >
             {isLoading ? <span className="animate-spin material-symbols-outlined text-3xl">sync</span> : (
               <>
@@ -81,7 +81,7 @@ const HealthAdvice: React.FC = () => {
 
              <button 
               onClick={() => navigate('/')}
-              className="w-full mt-10 bg-primary-light text-white py-6 rounded-2xl font-black text-xl shadow-xl flex items-center justify-center gap-3 active:scale-95 transition-all uppercase italic"
+              className="w-full mt-10 bg-primary-light text-white py-6 rounded-2xl font-black text-xl shadow-xl flex items-center justify-center gap-3 active:scale-95 transition-all uppercase"
              >
                 <span className="material-symbols-outlined">check_circle</span>
                 <span>Entendido, volver al inicio</span>

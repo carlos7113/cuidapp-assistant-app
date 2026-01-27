@@ -29,8 +29,8 @@ const AssistantQRPage: React.FC = () => {
           <span className="material-symbols-outlined text-3xl font-bold">arrow_back</span>
         </button>
         <div className="text-center">
-           <h1 className="text-xl font-black italic uppercase tracking-widest text-sos-red">Pasaporte médico QR</h1>
-           <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">Escaneo crítico de emergencia</p>
+          <h1 className="text-xl font-bold text-sos-red">Pasaporte médico QR</h1>
+          <p className="text-[9px] font-black text-slate-400">Escaneo crítico de emergencia</p>
         </div>
         <div className="size-14"></div>
       </header>
@@ -39,59 +39,59 @@ const AssistantQRPage: React.FC = () => {
         {/* Bloque QR de Alto Contraste */}
         <div className="bg-sos-red rounded-[3rem] p-10 flex flex-col items-center shadow-2xl shadow-sos-red/30">
           <div className="bg-white p-6 rounded-[2.5rem] shadow-inner mb-8 border-8 border-white/20">
-             <div className="size-64 flex flex-wrap gap-1">
-                {Array.from({length: 400}).map((_, i) => (
-                    <div key={i} className={`size-1.5 ${Math.random() > 0.3 ? 'bg-black' : 'bg-white'}`}></div>
-                ))}
-             </div>
+            <div className="size-64 flex flex-wrap gap-1">
+              {Array.from({ length: 400 }).map((_, i) => (
+                <div key={i} className={`size-1.5 ${Math.random() > 0.3 ? 'bg-secondary' : 'bg-white'}`}></div>
+              ))}
+            </div>
           </div>
           <div className="text-center text-white space-y-2">
-            <p className="text-2xl font-black italic uppercase tracking-tighter">{userName}</p>
+            <p className="text-2xl font-black tracking-tighter">{userName}</p>
             <div className="bg-white/20 px-6 py-2 rounded-full inline-block border border-white/30">
-               <span className="text-[10px] font-black uppercase tracking-widest">Sangre: {record.bloodType}</span>
+              <span className="text-[10px] font-black italic">Sangre: {record.bloodType}</span>
             </div>
           </div>
         </div>
 
         {/* Datos de Supervivencia */}
         <section className="space-y-6">
-          <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 ml-4">Información de supervivencia</h2>
-          
+          <h2 className="text-[10px] font-black italic tracking-[0.4em] text-slate-400 ml-4">Información de supervivencia</h2>
+
           <div className="grid grid-cols-1 gap-4">
             <div className="bg-slate-50 p-6 rounded-[2rem] border-l-8 border-sos-red">
-               <p className="text-[10px] font-black uppercase tracking-widest mb-2 text-sos-red">Alergias críticas</p>
-               <p className="text-2xl font-black italic text-secondary uppercase tracking-tighter">{record.allergies || 'Ninguna'}</p>
+              <p className="text-[10px] font-black italic mb-2 text-sos-red">Alergias críticas</p>
+              <p className="text-2xl font-black text-secondary tracking-tighter">{record.allergies || 'Ninguna'}</p>
             </div>
 
             <div className="bg-slate-50 p-6 rounded-[2rem] border-l-8 border-primary">
-               <p className="text-[10px] font-black uppercase tracking-widest mb-2 text-primary">Medicación activa</p>
-               <p className="font-bold text-secondary italic text-lg leading-tight">
+              <p className="text-[10px] font-black italic mb-2 text-primary">Medicación activa</p>
+              <p className="font-bold text-secondary text-lg leading-tight">
                 {record.medications || 'No registrada'}
-               </p>
+              </p>
             </div>
 
             {record.emergencyContact && (
               <div className="bg-slate-50 p-6 rounded-[2rem] border-l-8 border-secondary">
-                <p className="text-[10px] font-black uppercase tracking-widest mb-2 text-secondary">Contacto familiar</p>
+                <p className="text-[10px] font-black uppercase mb-2 text-secondary">Contacto familiar</p>
                 <div className="flex justify-between items-center">
-                    <div>
-                       <p className="text-xl font-black italic text-secondary">{record.emergencyContact.name}</p>
-                       <p className="text-xs font-bold text-slate-500 uppercase tracking-widest italic">{record.emergencyContact.phone}</p>
-                    </div>
-                    <a href={`tel:${record.emergencyContact.phone}`} className="size-12 rounded-xl bg-secondary text-white flex items-center justify-center">
-                       <span className="material-symbols-outlined fill-1">call</span>
-                    </a>
-                 </div>
+                  <div>
+                    <p className="text-xl font-black text-secondary">{record.emergencyContact.name}</p>
+                    <p className="text-xs font-bold text-slate-500 uppercase">{record.emergencyContact.phone}</p>
+                  </div>
+                  <a href={`tel:${record.emergencyContact.phone}`} className="size-12 rounded-xl bg-secondary text-white flex items-center justify-center">
+                    <span className="material-symbols-outlined fill-1">call</span>
+                  </a>
+                </div>
               </div>
             )}
           </div>
         </section>
 
         <div className="p-8 bg-slate-50 rounded-[2rem] border-2 border-dashed border-slate-200 flex flex-col items-center gap-4 text-center">
-           <span className="material-symbols-outlined text-sos-red text-4xl animate-pulse">emergency</span>
-           <p className="text-[10px] font-black text-slate-500 leading-relaxed uppercase tracking-widest italic pr-4">
-             Este código expone datos médicos vitales para socorristas certificados y personal hospitalario.
-           </p>
+          <span className="material-symbols-outlined text-sos-red text-4xl animate-pulse">emergency</span>
+          <p className="text-[10px] font-black text-slate-500 leading-relaxed uppercase pr-4">
+            Este código expone datos médicos vitales para socorristas certificados y personal hospitalario.
+          </p>
         </div>
       </main>
     </div>

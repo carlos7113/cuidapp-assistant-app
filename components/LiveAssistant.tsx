@@ -152,10 +152,10 @@ const LiveAssistant: React.FC = () => {
           <span className="material-symbols-outlined text-primary text-3xl">close</span>
         </button>
         <div className="flex flex-col items-center">
-          <h2 className="text-xl font-black tracking-[0.2em] uppercase italic text-primary">Cuida</h2>
+          <h2 className="text-xl font-black tracking-[0.2em] uppercase text-primary">Cuida</h2>
           <div className="flex items-center gap-2">
             <div className={`size-3 rounded-full ${isActive ? 'bg-green-500 shadow-[0_0_12px_#22c55e]' : 'bg-slate-200'}`}></div>
-            <span className="text-[10px] font-black opacity-60 uppercase tracking-widest text-slate-400">{isActive ? 'Escuchando' : 'Inactivo'}</span>
+            <span className="text-[10px] font-black opacity-60 uppercase text-slate-400">{isActive ? 'Escuchando' : 'Inactivo'}</span>
           </div>
         </div>
         <button onClick={() => setShowSettings(!showSettings)} className="size-14 rounded-full bg-slate-50 flex items-center justify-center active:rotate-45 transition-all border border-slate-100 shadow-sm">
@@ -167,7 +167,7 @@ const LiveAssistant: React.FC = () => {
       {showSettings && (
         <div className="absolute inset-0 bg-white/95 backdrop-blur-md z-50 p-8 flex flex-col animate-in fade-in zoom-in duration-300">
            <div className="flex justify-between items-center mb-12">
-              <h3 className="text-2xl font-black italic text-primary">Ajustes de Voz</h3>
+              <h3 className="text-2xl font-black text-primary">Ajustes de Voz</h3>
               <button onClick={() => setShowSettings(false)} className="size-12 rounded-full bg-slate-100 flex items-center justify-center">
                 <span className="material-symbols-outlined text-primary">close</span>
               </button>
@@ -197,17 +197,17 @@ const LiveAssistant: React.FC = () => {
         </div>
 
         <div className="max-w-xs text-center space-y-6">
-          <h3 className="text-3xl font-black font-plus italic tracking-tight text-slate-900">
+          <h3 className="text-3xl font-black font-plus tracking-tight text-slate-900">
             {isActive ? 'Te escucho...' : 'Asistente de Voz'}
           </h3>
           <div className="h-28 overflow-y-auto text-sm text-slate-500 font-medium tracking-wide leading-relaxed px-4">
             {transcription.length > 0 ? (
               <div className="space-y-3">
                 {transcription.slice(-2).map((t, i) => (
-                  <p key={i} className={`p-3 rounded-2xl ${i % 2 === 0 ? 'bg-slate-50' : 'text-primary font-black italic'}`}>{t}</p>
+                  <p key={i} className={`p-3 rounded-2xl ${i % 2 === 0 ? 'bg-slate-50' : 'text-primary font-black'}`}>{t}</p>
                 ))}
               </div>
-            ) : <p className="opacity-40 italic">Pulsa el botón de abajo para comenzar...</p>}
+            ) : <p className="opacity-40">Pulsa el botón de abajo para comenzar...</p>}
           </div>
         </div>
       </div>
@@ -224,7 +224,7 @@ const LiveAssistant: React.FC = () => {
             ) : (
               <>
                 <span className="material-symbols-outlined text-4xl">mic</span>
-                <span className="italic tracking-wider uppercase">Activar</span>
+                <span className="tracking-wider uppercase">Activar</span>
               </>
             )}
           </button>

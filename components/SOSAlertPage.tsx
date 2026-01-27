@@ -21,8 +21,8 @@ const SOSAlertPage: React.FC = () => {
         <div className="text-primary flex size-12 items-center justify-center">
           <span className="material-symbols-outlined text-4xl">shield_with_heart</span>
         </div>
-        <h2 className="text-sos-red text-xl font-black tracking-tight italic pr-12">
-           {isFall ? 'Impacto detectado' : 'Alerta SOS'}
+        <h2 className="text-sos-red text-xl font-black italic tracking-tight pr-12">
+          {isFall ? 'Impacto detectado' : 'Alerta SOS'}
         </h2>
       </header>
 
@@ -40,23 +40,23 @@ const SOSAlertPage: React.FC = () => {
           </div>
         </div>
 
-        <h1 className="text-3xl font-black pt-8 leading-tight text-slate-900 italic tracking-tight">
+        <h1 className="text-3xl font-black italic pt-8 leading-tight text-slate-900 tracking-tight">
           {countdown > 0 ? (isFall ? 'Iniciando alerta de caída...' : 'Iniciando alerta SOS...') : '¡Ayuda en camino!'}
         </h1>
-        
+
         {isFall && (
-           <p className="text-sos-red font-bold text-sm mt-2 animate-pulse">
-             Protocolo de caída grave activado
-           </p>
+          <p className="text-sos-red font-bold text-sm mt-2 animate-pulse">
+            Protocolo de caída grave activado
+          </p>
         )}
 
         <div className="mt-8 space-y-4">
-          <button 
+          <button
             onClick={() => navigate('/emergency-qr')}
             className="w-full bg-white border-4 border-sos-red text-sos-red py-5 rounded-2xl flex items-center justify-center gap-4 shadow-xl active:scale-95 transition-all"
           >
-             <span className="material-symbols-outlined text-4xl fill-1">qr_code_2</span>
-             <span className="text-xl font-black italic tracking-tight">Ficha médica QR</span>
+            <span className="material-symbols-outlined text-4xl fill-1">qr_code_2</span>
+            <span className="text-xl font-bold tracking-tight">Ficha médica QR</span>
           </button>
           <p className="text-xs font-bold text-slate-400">Visible para servicios de emergencia</p>
         </div>
@@ -80,13 +80,13 @@ const SOSAlertPage: React.FC = () => {
       </main>
 
       <footer className="absolute bottom-0 inset-x-0 p-8 bg-white/95 backdrop-blur-md border-t border-slate-100 space-y-4 z-[100] shadow-[0_-15px_40px_rgba(0,0,0,0.05)] rounded-t-[2.5rem]">
-        <button className="w-full bg-sos-red text-white font-black py-5 rounded-2xl flex items-center justify-center gap-3 shadow-2xl shadow-sos-red/30 active:scale-95 transition-all text-xl italic">
-          <span className="material-symbols-outlined text-3xl">call</span> 
+        <button className="w-full bg-sos-red text-white font-black italic py-5 rounded-2xl flex items-center justify-center gap-3 shadow-2xl shadow-sos-red/30 active:scale-95 transition-all text-xl">
+          <span className="material-symbols-outlined text-3xl">call</span>
           Llamar a emergencias
         </button>
-        <button 
+        <button
           onClick={() => navigate('/home')}
-          className="w-full bg-slate-50 text-slate-400 font-bold py-4 rounded-2xl active:scale-95 transition-all text-sm italic"
+          className="w-full bg-slate-50 text-slate-400 font-bold py-4 rounded-2xl active:scale-95 transition-all text-sm"
         >
           Cancelar alerta
         </button>

@@ -2,9 +2,9 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-export const Header: React.FC<{ 
-  title: string; 
-  showBack?: boolean; 
+export const Header: React.FC<{
+  title: string;
+  showBack?: boolean;
   transparent?: boolean;
   onBackClick?: () => void;
 }> = ({ title, showBack = true, transparent = false, onBackClick }) => {
@@ -13,8 +13,8 @@ export const Header: React.FC<{
     <header className={`sticky top-0 z-[100] px-6 py-6 flex items-center justify-between border-b ${transparent ? 'bg-transparent border-transparent' : 'bg-white/95 backdrop-blur-md border-slate-50 shadow-sm'}`}>
       <div className="w-14 h-14 flex items-center">
         {showBack && (
-          <button 
-            onClick={onBackClick || (() => navigate(-1))} 
+          <button
+            onClick={onBackClick || (() => navigate(-1))}
             className="size-14 -ml-2 rounded-full flex items-center justify-center text-primary active:bg-slate-50 transition-all"
             aria-label="Volver atrás"
           >
@@ -33,14 +33,14 @@ export const Header: React.FC<{
 export const SOSButton: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   const status = localStorage.getItem('cuidapp_status') || 'guest';
   const tripSaved = localStorage.getItem('cuidapp_active_trip');
   const trip = tripSaved ? JSON.parse(tripSaved) : { status: 'idle' };
-  
+
   const isGuest = status === 'guest';
   const hasActiveTrip = ['searching', 'arriving', 'active', 'in_progress'].includes(trip.status);
-  
+
   if (isGuest && !hasActiveTrip) return null;
 
   const hideSOS = ['/sos-alert', '/trip-summary', '/emergency-qr'].includes(location.pathname);
@@ -51,13 +51,13 @@ export const SOSButton: React.FC = () => {
   };
 
   return (
-    <div className="absolute bottom-[110px] right-[16px] z-[500] pointer-events-none">
-      <button 
+    <div className="absolute bottom-[100px] right-[20px] z-[500] pointer-events-none">
+      <button
         onClick={handleSOS}
         className="pointer-events-auto size-20 bg-sos-red text-white rounded-full shadow-[0_15px_40px_rgba(231,76,60,0.4)] active:scale-90 transition-all border-4 border-white flex flex-col items-center justify-center group"
       >
         <span className="material-symbols-outlined text-4xl font-bold fill-1 group-hover:scale-110 transition-transform">emergency_home</span>
-        <span className="text-[10px] font-black tracking-tighter mt-[-4px] italic text-white uppercase">SOS</span>
+        <span className="text-[10px] font-black italic tracking-tighter mt-[-4px] text-white uppercase">SOS</span>
       </button>
     </div>
   );
@@ -68,7 +68,7 @@ export const BottomNav: React.FC = () => {
   const location = useLocation();
   const role = localStorage.getItem('cuidapp_role');
   const status = localStorage.getItem('cuidapp_status') || 'guest';
-  
+
   const seniorItems = [
     { id: 'home', icon: 'home', label: 'Inicio', path: '/member-home', premium: false },
     { id: 'health', icon: 'medical_services', label: 'Salud', path: '/medical-record', premium: true },
@@ -106,9 +106,9 @@ export const BottomNav: React.FC = () => {
         const active = isActive(item.path);
         const isLocked = status === 'guest' && item.premium;
         const colorClass = active ? 'text-primary' : 'text-[#94A3B8]';
-        
+
         return (
-          <button 
+          <button
             key={item.id}
             onClick={() => handleNavClick(item)}
             className={`flex flex-col items-center justify-center gap-1 transition-all flex-1 h-full active:scale-90 relative`}
@@ -116,7 +116,7 @@ export const BottomNav: React.FC = () => {
             <span className={`material-symbols-outlined text-3xl transition-colors ${active ? 'fill-1' : ''} ${colorClass}`}>
               {item.icon}
             </span>
-            <span className={`text-[10px] font-bold italic transition-colors ${colorClass}`}>
+            <span className={`text-[10px] font-bold transition-colors ${colorClass}`}>
               {item.label}
             </span>
             {isLocked && (

@@ -96,40 +96,41 @@ const App: React.FC = () => {
   return (
     <Router>
       <MainLayout>
-        <Routes>
-          <Route path="/" element={<RoleSelectorPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/guest-onboarding" element={<HomePage />} />
-          <Route path="/select-plan" element={<Navigate to="/plan-selection" replace />} />
-          <Route path="/plan-selection" element={<PlanSelectionPage />} />
-          <Route path="/onboarding-medical" element={<OnboardingMedical />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
+        <MainLayout>
+          <Routes>
+            <Route path="/" element={<RoleSelectorPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
+            <Route path="/guest-onboarding" element={<HomePage />} />
+            <Route path="/select-plan" element={<Navigate to="/plan-selection" replace />} />
+            <Route path="/plan-selection" element={<PlanSelectionPage />} />
+            <Route path="/onboarding-medical" element={<OnboardingMedical />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
 
-          <Route path="/guest-home" element={<Navigate to="/guest-onboarding" replace />} />
-          <Route path="/home" element={<MemberHomePage />} />
-          <Route path="/member-home" element={<Navigate to="/home" replace />} />
+            <Route path="/guest-home" element={<Navigate to="/guest-onboarding" replace />} />
+            <Route path="/home" element={<MemberHomePage />} />
+            <Route path="/member-home" element={<Navigate to="/home" replace />} />
 
-          <Route path="/health" element={<HealthMonitoringPage />} />
-          <Route path="/medical-record" element={<MedicalRecordPage />} />
-          <Route path="/family" element={<FamilyDashboardPage />} />
-          <Route path="/trip-booking" element={<TripBookingPage />} />
-          <Route path="/active-trip" element={<ActiveTripPage />} />
-          <Route path="/trip-summary" element={<TripSummaryPage />} />
-          <Route path="/sos-alert" element={<SOSAlertPage />} />
-          <Route path="/assistant-config" element={<AssistantConfigPage />} />
-          <Route path="/account" element={<AccountPage />} />
-          <Route path="/live-chat" element={<LiveAssistant />} />
-          <Route path="/health-advice" element={<HealthAdvice />} />
+            <Route path="/health" element={<HealthMonitoringPage />} />
+            <Route path="/medical-record" element={<MedicalRecordPage />} />
+            <Route path="/family" element={<FamilyDashboardPage />} />
+            <Route path="/trip-booking" element={<TripBookingPage />} />
+            <Route path="/active-trip" element={<ActiveTripPage />} />
+            <Route path="/trip-summary" element={<TripSummaryPage />} />
+            <Route path="/sos-alert" element={<SOSAlertPage />} />
+            <Route path="/assistant-config" element={<AssistantConfigPage />} />
+            <Route path="/account" element={<AccountPage />} />
+            <Route path="/live-chat" element={<LiveAssistant />} />
+            <Route path="/health-advice" element={<HealthAdvice />} />
 
-          <Route path="/assistant-home" element={<AssistantDashboardPage />} />
-          <Route path="/assistant-earnings" element={<AssistantEarningsPage />} />
-          <Route path="/emergency-qr" element={<AssistantQRPage />} />
-          <Route path="/emergency-detail" element={<EmergencyDetailView />} />
+            <Route path="/assistant-home" element={<AssistantDashboardPage />} />
+            <Route path="/assistant-earnings" element={<AssistantEarningsPage />} />
+            <Route path="/emergency-qr" element={<AssistantQRPage />} />
+            <Route path="/emergency-detail" element={<EmergencyDetailView />} />
 
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </MainLayout>
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </MainLayout>
     </Router>
   );
 };
