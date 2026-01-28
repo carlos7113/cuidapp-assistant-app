@@ -91,6 +91,8 @@ const TripBookingPage: React.FC = () => {
 
     // 💾 RECUPERACIÓN DE SERVICIO SELECCIONADO (Blindaje contra retroceso)
     const savedService = localStorage.getItem('cuidapp_selected_service');
+    const savedDistance = localStorage.getItem('cuidapp_trip_distance');
+
     if (savedService) {
       try {
         const service = JSON.parse(savedService);
@@ -108,6 +110,11 @@ const TripBookingPage: React.FC = () => {
       } catch (e) {
         console.error('Error al recuperar servicio:', e);
       }
+    } else if (savedDistance) {
+      // Si no hay servicio pero hay distancia, restaurar al menos la distancia
+      const dist = parseFloat(savedDistance);
+      setTripMetrics(prev => ({ ...prev, distance: dist }));
+      console.log('💾 Distancia recuperada para cálculos estables:', dist);
     }
 
     // Recuperar método de pago (permitido para todos)
@@ -197,16 +204,28 @@ const TripBookingPage: React.FC = () => {
   const handleSelectDest = (dest: Destination) => {
     setSelectedDest(dest);
 
-    // 1. Simulate Distance IMMEDIATELY
-    const randomDistance = Math.floor(Math.random() * (120 - 30 + 1) + 30) / 10;
-    setTripMetrics(prev => ({ ...prev, distance: randomDistance }));
+    // 🔒 PERSISTENCIA DE DISTANCIA (CTO Senior Fix)
+    // Solo generamos distancia si no existe una guardada
+    let finalDistance: number;
+    const storedDistance = localStorage.getItem('cuidapp_trip_distance');
+
+    if (storedDistance) {
+      finalDistance = parseFloat(storedDistance);
+      console.log('💾 Usando distancia persistente:', finalDistance);
+    } else {
+      finalDistance = Math.floor(Math.random() * (120 - 30 + 1) + 30) / 10;
+      localStorage.setItem('cuidapp_trip_distance', finalDistance.toString());
+      console.log('🎲 Nueva distancia generada y bloqueada:', finalDistance);
+    }
+
+    setTripMetrics(prev => ({ ...prev, distance: finalDistance }));
 
     // 2. Persist Destination immediately
     const currentTrip = JSON.parse(localStorage.getItem('cuidapp_active_trip') || '{}');
     localStorage.setItem('cuidapp_active_trip', JSON.stringify({
       ...currentTrip,
       destination: dest.name,
-      distanceSimulated: randomDistance,
+      distanceSimulated: finalDistance,
       status: 'confirmation' // Marker for in-progress
     }));
 
