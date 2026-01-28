@@ -89,6 +89,27 @@ const TripBookingPage: React.FC = () => {
       setShareFamily(savedShare);
     }
 
+    // 💾 RECUPERACIÓN DE SERVICIO SELECCIONADO (Blindaje contra retroceso)
+    const savedService = localStorage.getItem('cuidapp_selected_service');
+    if (savedService) {
+      try {
+        const service = JSON.parse(savedService);
+        setServiceLevel(service.level);
+        setTripMetrics(prev => ({
+          ...prev,
+          distance: service.distance,
+          baseCost: service.baseCost,
+          distanceCost: service.distanceCost,
+          assistanceBonus: service.assistanceBonus,
+          bonoDiscount: service.bonoDiscount,
+          totalPrice: service.totalPrice
+        }));
+        console.log('💾 Servicio recuperado:', service.level, '- Precio:', service.totalPrice);
+      } catch (e) {
+        console.error('Error al recuperar servicio:', e);
+      }
+    }
+
     // Recuperar método de pago (permitido para todos)
     const savedPay = localStorage.getItem('cuidapp_payment_method');
     if (savedPay) setPaymentMethod(savedPay as 'cash' | 'card');
@@ -422,7 +443,16 @@ const TripBookingPage: React.FC = () => {
                   title="Traslado Básico"
                   desc="Punto A a Punto B + Bono $2.50"
                   price={`$${calculateCardPrice('basic')}`}
-                  onClick={() => { setServiceLevel('basic'); }}
+                  onClick={() => {
+                    setServiceLevel('basic');
+                    // 💾 Persistir servicio seleccionado
+                    const metrics = generateDynamicPrice('basic');
+                    localStorage.setItem('cuidapp_selected_service', JSON.stringify({
+                      level: 'basic',
+                      name: 'Traslado Básico',
+                      ...metrics
+                    }));
+                  }}
                 />
                 <ServiceLevelButton
                   active={serviceLevel === 'assisted'}
@@ -430,7 +460,16 @@ const TripBookingPage: React.FC = () => {
                   title="Traslado Asistido"
                   desc="Asistencia puerta a puerta + Bono $5.00"
                   price={`$${calculateCardPrice('assisted')}`}
-                  onClick={() => { setServiceLevel('assisted'); }}
+                  onClick={() => {
+                    setServiceLevel('assisted');
+                    // 💾 Persistir servicio seleccionado
+                    const metrics = generateDynamicPrice('assisted');
+                    localStorage.setItem('cuidapp_selected_service', JSON.stringify({
+                      level: 'assisted',
+                      name: 'Traslado Asistido',
+                      ...metrics
+                    }));
+                  }}
                 />
                 <ServiceLevelButton
                   active={serviceLevel === 'premium'}
@@ -438,7 +477,16 @@ const TripBookingPage: React.FC = () => {
                   title="Traslado Premium"
                   desc="Cita médica completa + Bono $15.00"
                   price={`$${calculateCardPrice('premium')}`}
-                  onClick={() => { setServiceLevel('premium'); }}
+                  onClick={() => {
+                    setServiceLevel('premium');
+                    // 💾 Persistir servicio seleccionado
+                    const metrics = generateDynamicPrice('premium');
+                    localStorage.setItem('cuidapp_selected_service', JSON.stringify({
+                      level: 'premium',
+                      name: 'Traslado Premium',
+                      ...metrics
+                    }));
+                  }}
                 />
               </div>
             </div>
