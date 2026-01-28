@@ -37,6 +37,8 @@ const RoleSelectorPage: React.FC = () => {
       localStorage.removeItem('cuidapp_payment_method');
       localStorage.removeItem('cuidapp_selected_service');
       localStorage.removeItem('cuidapp_trip_distance');
+      localStorage.removeItem('cuidapp_final_checkout_price');
+      localStorage.removeItem('cuidapp_selected_service_name');
 
       console.log('🧹 Limpieza de emergencia ejecutada: TODOS los datos de invitado eliminados');
       console.log('🔒 Datos de familiares eliminados por seguridad');

@@ -6,7 +6,8 @@ import { Header } from './Layout';
 const CheckoutPage: React.FC = () => {
   const navigate = useNavigate();
   const [isProcessing, setIsProcessing] = useState(false);
-  const [tripPrice, setTripPrice] = useState('$7.60');
+  const [tripPrice, setTripPrice] = useState('$0.00');
+  const [serviceName, setServiceName] = useState('Transporte protegido');
 
   // Estados de los campos de pago
   const [cardNumber, setCardNumber] = useState('');
@@ -15,10 +16,23 @@ const CheckoutPage: React.FC = () => {
   const [cardName, setCardName] = useState('');
 
   useEffect(() => {
-    const savedTrip = localStorage.getItem('cuidapp_active_trip');
-    if (savedTrip) {
-      const trip = JSON.parse(savedTrip);
-      if (trip.price) setTripPrice(`$${trip.price.toFixed(2)}`);
+    // 🔒 LECTURA DE PRECIO BLINDADO (CTO Senior Fix)
+    const lockedPrice = localStorage.getItem('cuidapp_final_checkout_price');
+    const lockedService = localStorage.getItem('cuidapp_selected_service_name');
+
+    if (lockedPrice) {
+      setTripPrice(`$${lockedPrice}`);
+    } else {
+      // Fallback a active_trip si no hay precio bloqueado
+      const savedTrip = localStorage.getItem('cuidapp_active_trip');
+      if (savedTrip) {
+        const trip = JSON.parse(savedTrip);
+        if (trip.price) setTripPrice(`$${trip.price.toFixed(2)}`);
+      }
+    }
+
+    if (lockedService) {
+      setServiceName(lockedService);
     }
   }, []);
 
@@ -76,31 +90,31 @@ const CheckoutPage: React.FC = () => {
   const cardType = getCardType();
 
   return (
-    <div className="min-h-screen bg-white font-plus flex flex-col text-secondary">
+    <div className="min-h-screen bg-white font-plus flex flex-col text-[#0052CC]">
       <Header title="Datos de la tarjeta" showBack={true} onBackClick={() => navigate(-1)} />
 
       <main className="flex-1 p-8 space-y-10 overflow-y-auto pb-[120px] custom-scrollbar">
-        <section className="bg-primary/5 border-2 border-primary/10 p-8 rounded-[3.5rem] space-y-4">
+        <section className="bg-[#6C5CE7]/5 border-2 border-[#6C5CE7]/10 p-8 rounded-[3.5rem] space-y-4 shadow-sm">
           <div className="flex justify-between items-center">
-            <h3 className="text-xl font-bold text-primary">Detalle del viaje</h3>
-            <span className="bg-primary text-white px-4 py-1 rounded-full text-[10px] font-black leading-none">Cuidapp+</span>
+            <h3 className="text-xl font-bold text-[#6C5CE7] italic">Detalle del viaje</h3>
+            <span className="bg-[#6C5CE7] text-white px-4 py-1 rounded-full text-[10px] font-black leading-none">Cuidapp+</span>
           </div>
           <div className="flex justify-between items-end">
             <div>
-              <p className="text-2xl font-bold text-secondary leading-tight">Transporte protegido</p>
-              <p className="text-xs font-bold text-slate-400">Pago por viaje único</p>
+              <p className="text-2xl font-black text-[#0052CC] leading-tight italic">{serviceName}</p>
+              <p className="text-xs font-bold text-slate-400 italic">Pago por viaje único</p>
             </div>
-            <p className="text-3xl font-black text-primary">{tripPrice}</p>
+            <p className="text-4xl font-black text-[#6C5CE7] tracking-tighter">{tripPrice}</p>
           </div>
         </section>
 
         <form onSubmit={handlePayment} className="space-y-8">
           <div className="space-y-6">
-            <h4 className="text-[10px] font-black tracking-[0.4em] text-slate-300 ml-2">Ingresa los datos de tu tarjeta</h4>
+            <h4 className="text-[10px] font-black tracking-[0.4em] text-slate-300 ml-2 uppercase italic">Ingresa los datos de tu tarjeta</h4>
 
             <div className="space-y-4">
               <div className="space-y-2">
-                <label className="text-xs font-bold text-secondary ml-2">Número de tarjeta</label>
+                <label className="text-xs font-bold text-[#0052CC] ml-2 italic">Número de tarjeta</label>
                 <div className="relative">
                   <input
                     type="text"
@@ -108,7 +122,7 @@ const CheckoutPage: React.FC = () => {
                     value={cardNumber}
                     onChange={handleCardNumberChange}
                     placeholder="0000 0000 0000 0000"
-                    className="w-full h-16 px-6 bg-slate-50 border-2 border-slate-100 rounded-2xl font-bold text-lg text-secondary focus:border-primary focus:bg-white outline-none transition-all placeholder:text-slate-300"
+                    className="w-full h-16 px-6 bg-slate-50 border-2 border-slate-100 rounded-2xl font-bold text-lg text-[#0052CC] focus:border-[#6C5CE7] focus:bg-white outline-none transition-all placeholder:text-slate-200"
                   />
                   <div className="absolute right-5 top-1/2 -translate-y-1/2 flex items-center gap-2">
                     {cardType === 'Visa' && (
@@ -124,18 +138,18 @@ const CheckoutPage: React.FC = () => {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-secondary ml-2">Vencimiento</label>
+                  <label className="text-xs font-bold text-[#0052CC] ml-2 italic">Vencimiento</label>
                   <input
                     type="text"
                     required
                     value={expiry}
                     onChange={handleExpiryChange}
                     placeholder="MM / YY"
-                    className="w-full h-16 px-6 bg-slate-50 border-2 border-slate-100 rounded-2xl font-bold text-lg text-secondary focus:border-primary focus:bg-white outline-none transition-all placeholder:text-slate-300"
+                    className="w-full h-16 px-6 bg-slate-50 border-2 border-slate-100 rounded-2xl font-bold text-lg text-[#0052CC] focus:border-[#6C5CE7] focus:bg-white outline-none transition-all placeholder:text-slate-200"
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-secondary ml-2">CVV</label>
+                  <label className="text-xs font-bold text-[#0052CC] ml-2 italic">CVV</label>
                   <input
                     type="text"
                     required
@@ -143,28 +157,28 @@ const CheckoutPage: React.FC = () => {
                     value={cvv}
                     onChange={(e) => setCvv(e.target.value.replace(/\D/g, ''))}
                     placeholder="123"
-                    className="w-full h-16 px-6 bg-slate-50 border-2 border-slate-100 rounded-2xl font-bold text-lg text-secondary focus:border-primary focus:bg-white outline-none transition-all placeholder:text-slate-300"
+                    className="w-full h-16 px-6 bg-slate-50 border-2 border-slate-100 rounded-2xl font-bold text-lg text-[#0052CC] focus:border-[#6C5CE7] focus:bg-white outline-none transition-all placeholder:text-slate-200"
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-bold text-secondary ml-2">Nombre en la tarjeta</label>
+                <label className="text-xs font-bold text-[#0052CC] ml-2 italic">Nombre en la tarjeta</label>
                 <input
                   type="text"
                   required
                   value={cardName}
                   onChange={(e) => setCardName(e.target.value)}
                   placeholder="Ej: Juan Pérez"
-                  className="w-full h-16 px-6 bg-slate-50 border-2 border-slate-100 rounded-2xl font-bold text-lg text-secondary focus:border-primary focus:bg-white outline-none transition-all placeholder:text-slate-300"
+                  className="w-full h-16 px-6 bg-slate-50 border-2 border-slate-100 rounded-2xl font-bold text-lg text-[#0052CC] focus:border-[#6C5CE7] focus:bg-white outline-none transition-all placeholder:text-slate-200"
                 />
               </div>
             </div>
           </div>
 
-          <div className="p-6 bg-slate-50 rounded-2xl border border-slate-100 flex gap-4">
+          <div className="p-6 bg-[#6C5CE7]/5 rounded-2xl border border-[#6C5CE7]/10 flex gap-4">
             <span className="material-symbols-outlined text-green-500 font-bold">lock</span>
-            <p className="text-[10px] font-bold text-slate-400 leading-relaxed">
+            <p className="text-[10px] font-bold text-slate-400 leading-relaxed italic">
               Tus datos están encriptados bajo estándares bancarios. Cuidapp+ no almacena tu código de seguridad CVV por tu privacidad.
             </p>
           </div>
@@ -172,21 +186,21 @@ const CheckoutPage: React.FC = () => {
           <button
             type="submit"
             disabled={isProcessing}
-            className="w-full bg-primary text-white py-8 rounded-[2.5rem] font-bold text-2xl shadow-2xl shadow-primary/30 active:scale-95 transition-all flex items-center justify-center gap-4 border-4 border-white/20 tracking-wide"
+            className="w-full bg-[#6C5CE7] text-white py-8 rounded-[2.5rem] font-bold text-2xl shadow-2xl shadow-[#6C5CE7]/30 active:scale-95 transition-all flex items-center justify-center gap-4 border-4 border-white/20 tracking-wide"
           >
             {isProcessing ? (
               <span className="animate-spin material-symbols-outlined text-4xl font-bold">sync</span>
             ) : (
               <>
                 <span className="material-symbols-outlined text-3xl font-bold">verified_user</span>
-                <span>Guardar tarjeta y continuar</span>
+                <span className="italic">Guardar tarjeta y continuar</span>
               </>
             )}
           </button>
         </form>
       </main>
 
-      <footer className="p-8 text-center text-[10px] font-bold text-slate-300 tracking-[0.2em] mb-4">
+      <footer className="p-8 text-center text-[10px] font-bold text-slate-300 tracking-[0.2em] mb-4 italic">
         Protección garantizada por Cuidapp+
       </footer>
     </div>

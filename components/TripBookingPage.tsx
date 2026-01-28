@@ -65,29 +65,15 @@ const TripBookingPage: React.FC = () => {
     setIsMember(registered);
     setMemberPlan(plan);
 
-    // 🔒 SEGUNDA CAPA DE SEGURIDAD: Limpieza de datos de familiares para invitados
-    if (!registered) {
-      // Forzar inicialización vacía para invitados
-      setFamilyContact({ name: '', phone: '' });
-      setShareFamily(false);
+    // 🔒 RECUPERACIÓN DE DATOS (Independiente de registro)
+    const savedFamName = localStorage.getItem('cuidapp_familiar_name');
+    const savedFamPhone = localStorage.getItem('cuidapp_familiar_phone');
+    const savedShare = localStorage.getItem('cuidapp_familiar_share') === 'true';
 
-      // Eliminar cualquier dato residual de familiares
-      localStorage.removeItem('cuidapp_familiar_name');
-      localStorage.removeItem('cuidapp_familiar_phone');
-      localStorage.removeItem('cuidapp_familiar_share');
-
-      console.log('🔒 TripBookingPage: Datos de familiares limpiados para invitado');
-    } else {
-      // Solo recuperar datos si es usuario registrado
-      const savedFamName = localStorage.getItem('cuidapp_familiar_name');
-      const savedFamPhone = localStorage.getItem('cuidapp_familiar_phone');
-      const savedShare = localStorage.getItem('cuidapp_familiar_share') === 'true';
-
-      if (savedFamName || savedFamPhone) {
-        setFamilyContact({ name: savedFamName || '', phone: savedFamPhone || '' });
-      }
-      setShareFamily(savedShare);
+    if (savedFamName || savedFamPhone) {
+      setFamilyContact({ name: savedFamName || '', phone: savedFamPhone || '' });
     }
+    setShareFamily(savedShare);
 
     // 💾 RECUPERACIÓN DE SERVICIO SELECCIONADO (Blindaje contra retroceso)
     const savedService = localStorage.getItem('cuidapp_selected_service');
@@ -471,6 +457,9 @@ const TripBookingPage: React.FC = () => {
                       name: 'Traslado Básico',
                       ...metrics
                     }));
+                    // LOCK: Precio final para checkout
+                    localStorage.setItem('cuidapp_final_checkout_price', metrics.totalPrice.toFixed(2));
+                    localStorage.setItem('cuidapp_selected_service_name', 'Traslado Básico');
                   }}
                 />
                 <ServiceLevelButton
@@ -488,6 +477,9 @@ const TripBookingPage: React.FC = () => {
                       name: 'Traslado Asistido',
                       ...metrics
                     }));
+                    // LOCK: Precio final para checkout
+                    localStorage.setItem('cuidapp_final_checkout_price', metrics.totalPrice.toFixed(2));
+                    localStorage.setItem('cuidapp_selected_service_name', 'Traslado Asistido');
                   }}
                 />
                 <ServiceLevelButton
@@ -505,6 +497,9 @@ const TripBookingPage: React.FC = () => {
                       name: 'Traslado Premium',
                       ...metrics
                     }));
+                    // LOCK: Precio final para checkout
+                    localStorage.setItem('cuidapp_final_checkout_price', metrics.totalPrice.toFixed(2));
+                    localStorage.setItem('cuidapp_selected_service_name', 'Traslado Premium');
                   }}
                 />
               </div>
