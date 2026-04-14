@@ -30,6 +30,8 @@ interface TripData {
   lead_medications?: string;
   lead_needs?: string[];
   destination_name?: string;
+  created_at?: string;
+  timestamp?: string;
 }
 
 const BLUE = '#0052CC';
@@ -46,8 +48,8 @@ const capitalize = (str: string) => {
 };
 
 const isTripFresh = (trip: TripData): boolean => {
-  if (!trip.timestamp) return false;
-  const age = (Date.now() - new Date(trip.timestamp).getTime()) / (1000 * 60 * 60);
+  if (!trip.created_at) return false;
+  const age = (Date.now() - new Date(trip.created_at).getTime()) / (1000 * 60 * 60);
   return age < TRIP_MAX_AGE_HOURS;
 };
 
@@ -151,7 +153,7 @@ const AssistantDashboardPage: React.FC = () => {
       destination: trip.destination,
       serviceLevel: trip.service_level,
       price: trip.price,
-      timestamp: new Date().toISOString(),
+      created_at: new Date().toISOString(),
       lead_name: trip.lead_name,
       lead_blood_type: trip.lead_blood_type,
       lead_allergies: trip.lead_allergies,
