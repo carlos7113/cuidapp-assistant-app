@@ -1,6 +1,6 @@
-
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { HashRouter as Router, Routes, Route, useNavigate, useLocation, Navigate } from 'react-router-dom';
+import { supabase } from './lib/supabaseClient';
 import HomePage from './components/HomePage';
 import HealthMonitoringPage from './components/HealthMonitoringPage';
 import FamilyDashboardPage from './components/FamilyDashboardPage';
@@ -12,126 +12,139 @@ import AccountPage from './components/AccountPage';
 import LiveAssistant from './components/LiveAssistant';
 import HealthAdvice from './components/HealthAdvice';
 import MedicalRecordPage from './components/MedicalRecordPage';
-import AssistantQRPage from './components/AssistantQRPage';
 import RoleSelectorPage from './components/RoleSelectorPage';
 import LoginPage from './components/LoginPage';
 import SignUpPage from './components/SignUpPage';
 import PlanSelectionPage from './components/PlanSelectionPage';
 import OnboardingMedical from './components/OnboardingMedical';
 import MemberHomePage from './components/MemberHomePage';
-import AssistantDashboardPage from './components/AssistantDashboardPage';
-import AssistantEarningsPage from './components/AssistantEarningsPage';
-import EmergencyDetailView from './components/EmergencyDetailView';
 import TripSummaryPage from './components/TripSummaryPage';
 import CheckoutPage from './components/CheckoutPage';
+
 import { BottomNav, SOSButton } from './components/Layout';
 
-const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const location = useLocation();
-  const role = localStorage.getItem('cuidapp_role');
+const MainLayout: React.FC<{ children: React.ReactNode, session: any }> = ({ children, session }) => {
+    const location = useLocation();
+    const role = localStorage.getItem('cuidapp_role');
+    const status = localStorage.getItem('cuidapp_status');
 
-  const hideChrome = [
-    '/',
-    '/login',
-    '/signup',
-    '/plan-selection',
-    '/onboarding-medical',
-    '/checkout',
-    '/sos-alert',
-    '/live-chat',
-    '/emergency-qr',
-    '/emergency-detail',
-    '/trip-summary'
-  ].includes(location.pathname);
+    const hideChrome = [
+        '/',
+        '/login',
+        '/signup',
+        '/plan-selection',
+        '/onboarding-medical',
+        '/checkout',
+        '/sos-alert',
+        '/live-chat',
+        '/emergency-qr',
+        '/emergency-detail',
+        '/trip-summary'
+    ].includes(location.pathname);
 
-  // GUARDA DE RUTA (Route Guard) - MANIFIESTO CUIDAPP+
-  // Previene navegación accidental fuera de un viaje activo
-  React.useEffect(() => {
-    const tripSaved = localStorage.getItem('cuidapp_active_trip');
-    if (tripSaved) {
-      const trip = JSON.parse(tripSaved);
-      const activeStatuses = ['arriving', 'in_progress', 'at_origin', 'destination_reached'];
+    // GUARDA DE RUTA (Route Guard) - MANIFIESTO CUIDAPP+
+    const exemptPaths = ['/', '/login', '/signup', '/plan-selection', '/guest-home', '/sos-alert', '/live-chat'];
 
-      // Si el viaje está activo y NO estamos en la pantalla de viaje, forzar redirección
-      if (activeStatuses.includes(trip.status) && location.pathname !== '/active-trip') {
-        // Excepción: Permitir SOS y Chat en vivo
-        if (!['/sos-alert', '/live-chat'].includes(location.pathname)) {
-          // navigate no está disponible directamente aquí porque MainLayout está dentro de Router pero 
-          // este componente se renderiza en cada ruta. Usaremos window.location.hash o un Navigate condicional
-          // Mejor práctica en React Router v6: Usar un componente wrapper o Navigate
+    // 1. Si hay un viaje activo, forzar redirección
+    if (role && session) {
+        const rawTrip = localStorage.getItem('cuidapp_active_trip');
+        if (rawTrip) {
+            try {
+                const trip = JSON.parse(rawTrip);
+                const activeStatuses = ['arriving', 'in_progress', 'at_origin', 'destination_reached'];
+                if (
+                    activeStatuses.includes(trip.status) &&
+                    location.pathname !== '/active-trip' &&
+                    !exemptPaths.includes(location.pathname)
+                ) {
+                    return <Navigate to="/active-trip" replace />;
+                }
+            } catch {
+                localStorage.removeItem('cuidapp_active_trip');
+            }
         }
-      }
     }
-  }, [location.pathname]);
 
-  // Lógica de redirección forzada usando return condicional si detectamos estado inválido
-  const tripSaved = localStorage.getItem('cuidapp_active_trip');
-  if (tripSaved) {
-    const trip = JSON.parse(tripSaved);
-    const activeStatuses = ['arriving', 'in_progress', 'at_origin', 'destination_reached'];
-    if (activeStatuses.includes(trip.status) &&
-      location.pathname !== '/active-trip' &&
-      !['/sos-alert', '/live-chat'].includes(location.pathname)) {
-      return <Navigate to="/active-trip" replace />;
+    // 2. Protección de rutas: Si no hay sesión y no es invitado, ir a login
+    const isGuest = status === 'guest';
+    const isPublic = exemptPaths.includes(location.pathname);
+
+    if (!session && !isGuest && !isPublic) {
+        return <Navigate to="/login" replace />;
     }
-  }
 
-  if (!role && !['/', '/login', '/signup', '/plan-selection', '/guest-home'].includes(location.pathname)) {
-    return <Navigate to="/" replace />;
-  }
-
-
-  return (
-    <div className="min-h-screen bg-white max-w-[480px] mx-auto relative shadow-2xl overflow-hidden flex flex-col border-x border-slate-100 text-dark-blue">
-      <div className="flex-1 overflow-y-auto relative">
-        {children}
-        {!hideChrome && role === 'senior' && <SOSButton />}
-      </div>
-      {!hideChrome && <BottomNav />}
-    </div>
-  );
+    return (
+        <div className="min-h-screen bg-white max-w-[480px] mx-auto relative shadow-2xl overflow-hidden flex flex-col border-x border-slate-100 text-dark-blue pb-[160px]">
+            <div className="flex-1 overflow-y-auto relative">
+                {children}
+                {!hideChrome && role === 'senior' && <SOSButton />}
+            </div>
+            {!hideChrome && <BottomNav />}
+        </div>
+    );
 };
 
 const App: React.FC = () => {
-  return (
-    <Router>
-      <MainLayout>
-        <Routes>
-          <Route path="/" element={<RoleSelectorPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/guest-onboarding" element={<HomePage />} />
-          <Route path="/select-plan" element={<Navigate to="/plan-selection" replace />} />
-          <Route path="/plan-selection" element={<PlanSelectionPage />} />
-          <Route path="/onboarding-medical" element={<OnboardingMedical />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
+    const [session, setSession] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
 
-          <Route path="/guest-home" element={<Navigate to="/guest-onboarding" replace />} />
-          <Route path="/home" element={<MemberHomePage />} />
-          <Route path="/member-home" element={<Navigate to="/home" replace />} />
+    useEffect(() => {
+        // Obtener sesión inicial
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            setSession(session);
+            setLoading(false);
+        });
 
-          <Route path="/health" element={<HealthMonitoringPage />} />
-          <Route path="/medical-record" element={<MedicalRecordPage />} />
-          <Route path="/family" element={<FamilyDashboardPage />} />
-          <Route path="/trip-booking" element={<TripBookingPage />} />
-          <Route path="/active-trip" element={<ActiveTripPage />} />
-          <Route path="/trip-summary" element={<TripSummaryPage />} />
-          <Route path="/sos-alert" element={<SOSAlertPage />} />
-          <Route path="/assistant-config" element={<AssistantConfigPage />} />
-          <Route path="/account" element={<AccountPage />} />
-          <Route path="/live-chat" element={<LiveAssistant />} />
-          <Route path="/health-advice" element={<HealthAdvice />} />
+        // Escuchar cambios
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+            setSession(session);
+        });
 
-          <Route path="/assistant-home" element={<AssistantDashboardPage />} />
-          <Route path="/assistant-earnings" element={<AssistantEarningsPage />} />
-          <Route path="/emergency-qr" element={<AssistantQRPage />} />
-          <Route path="/emergency-detail" element={<EmergencyDetailView />} />
+        return () => subscription.unsubscribe();
+    }, []);
 
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </MainLayout>
-    </Router>
-  );
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-white font-plus italic font-black text-primary">
+                Cargando Cuidapp+...
+            </div>
+        );
+    }
+
+    return (
+        <Router>
+            <MainLayout session={session}>
+                <Routes>
+                    <Route path="/" element={<RoleSelectorPage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/signup" element={<SignUpPage />} />
+                    <Route path="/guest-onboarding" element={<HomePage />} />
+                    <Route path="/select-plan" element={<Navigate to="/plan-selection" replace />} />
+                    <Route path="/plan-selection" element={<PlanSelectionPage />} />
+                    <Route path="/onboarding-medical" element={<OnboardingMedical />} />
+                    <Route path="/checkout" element={<CheckoutPage />} />
+
+                    <Route path="/guest-home" element={<Navigate to="/guest-onboarding" replace />} />
+                    <Route path="/home" element={<MemberHomePage />} />
+                    <Route path="/member-home" element={<Navigate to="/home" replace />} />
+
+                    <Route path="/health" element={<HealthMonitoringPage />} />
+                    <Route path="/medical-record" element={<MedicalRecordPage />} />
+                    <Route path="/family" element={<FamilyDashboardPage />} />
+                    <Route path="/trip-booking" element={<TripBookingPage />} />
+                    <Route path="/active-trip" element={<ActiveTripPage />} />
+                    <Route path="/trip-summary" element={<TripSummaryPage />} />
+                    <Route path="/sos-alert" element={<SOSAlertPage />} />
+                    <Route path="/assistant-config" element={<AssistantConfigPage />} />
+                    <Route path="/account" element={<AccountPage />} />
+                    <Route path="/live-chat" element={<LiveAssistant />} />
+                    <Route path="/health-advice" element={<HealthAdvice />} />
+
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+            </MainLayout>
+        </Router>
+    );
 };
 
 export default App;

@@ -4,175 +4,250 @@ import { useNavigate } from 'react-router-dom';
 import { Header } from './Layout';
 
 interface MemberData {
-  name: string;
-  emergencyContact: {
     name: string;
-    phone: string;
-    relationship: string;
-  };
-  emergencyContact2?: {
-    name: string;
-    phone: string;
-    relationship: string;
-  };
-  doctor?: {
-    name: string;
-    phone: string;
-  };
+    emergencyContact: {
+        name: string;
+        phone: string;
+        relationship: string;
+    };
+    emergencyContact2?: {
+        name: string;
+        phone: string;
+        relationship: string;
+    };
+    doctor?: {
+        name: string;
+        phone: string;
+    };
 }
 
 const FamilyDashboardPage: React.FC = () => {
-  const navigate = useNavigate();
-  const [record, setRecord] = useState<MemberData | null>(null);
-  const [userName, setUserName] = useState('Usuario');
+    const navigate = useNavigate();
+    const [record, setRecord] = useState<MemberData | null>(null);
+    const [userName, setUserName] = useState('Usuario');
+    const [activeTrip, setActiveTrip] = useState<any>(null);
+    const [bpm, setBpm] = useState(75);
+    const [showPulseAlert, setShowPulseAlert] = useState(false);
 
-  useEffect(() => {
-    const data = localStorage.getItem('cuidapp_member_data');
-    if (data) {
-      const parsed = JSON.parse(data);
-      setRecord(parsed);
-      setUserName(parsed.name || 'Usuario');
-    }
-  }, []);
+    useEffect(() => {
+        const data = localStorage.getItem('cuidapp_member_data');
+        if (data) {
+            const parsed = JSON.parse(data);
+            setRecord(parsed);
+            setUserName(parsed.name || 'Usuario');
+        }
 
-  return (
-    <div className="font-plus min-h-screen bg-white pb-40 text-secondary">
-      <Header
-        title="Círculo de cuidado"
-        onBackClick={() => navigate('/member-home')}
-      />
+        const tripSaved = localStorage.getItem('cuidapp_active_trip');
+        if (tripSaved) setActiveTrip(JSON.parse(tripSaved));
 
-      <main className="p-8 space-y-12 animate-in fade-in duration-500 overflow-y-auto">
-        {/* Cabecera del Usuario */}
-        <section className="flex flex-col items-center text-center gap-6">
-          <div className="size-28 rounded-full border-4 border-primary/10 p-1 overflow-hidden shadow-xl aspect-square bg-slate-50">
-            <img src="https://picsum.photos/seed/user/200" className="w-full h-full object-cover rounded-full" alt="Usuario" />
-          </div>
-          <div className="space-y-1">
-            <h1 className="text-3xl font-black text-primary leading-none tracking-tighter">
-              {userName}
-            </h1>
-            <p className="text-secondary font-bold text-sm">Socio Cuidapp+ Protegido</p>
-          </div>
-        </section>
+        // Partner/Family synchronization via BroadcastChannel
+        const channel = new BroadcastChannel('cuidapp_trip_channel');
+        channel.onmessage = (event) => {
+            if (event.data && event.data.type === 'NEW_TRIP_REQUEST') {
+                const updatedTrip = { ...event.data, status: 'arriving' };
+                setActiveTrip(updatedTrip);
+                localStorage.setItem('cuidapp_active_trip', JSON.stringify(updatedTrip));
+            }
+        };
 
-        {/* Sección Familiares */}
-        <section className="space-y-6">
-          <div className="flex flex-col gap-1 ml-2">
-            <h3 className="text-sm font-black text-primary tracking-wider">Familiares responsables</h3>
-            <p className="text-xs font-medium text-secondary/60">Personas que reciben tus alertas de seguridad.</p>
-          </div>
+        return () => {
+            channel.close();
+        };
+    }, []);
 
-          <div className="space-y-4">
-            {/* Familiar 1 - CONTACTO PRINCIPAL */}
-            {record?.emergencyContact && record.emergencyContact.name && (
-              <div className="bg-white border-4 border-primary/20 p-6 rounded-[2.5rem] shadow-xl flex items-center justify-between relative">
-                <div className="absolute -top-3 left-8 bg-primary text-white text-[8px] font-black px-4 py-1 rounded-full">
-                  Contacto principal
-                </div>
-                <div className="flex items-center gap-5 pt-2">
-                  <div className="size-16 rounded-2xl bg-primary/5 text-primary flex items-center justify-center">
-                    <span className="material-symbols-outlined text-4xl font-bold">family_restroom</span>
-                  </div>
-                  <div>
-                    <p className="text-[10px] font-black text-slate-400 leading-none mb-1">
-                      {record.emergencyContact.relationship}
+    useEffect(() => {
+        if (bpm > 100) {
+            setShowPulseAlert(true);
+        } else {
+            setShowPulseAlert(false);
+        }
+    }, [bpm]);
+
+    const simulateHighPulse = () => {
+        setBpm(105);
+    };
+
+    return (
+        <div className="font-plus min-h-screen bg-white text-secondary pb-[160px]">
+            <Header
+                title="Círculo de cuidado"
+                onBackClick={() => navigate('/member-home')}
+            />
+
+            <main className="p-8 space-y-12 animate-in fade-in duration-500 overflow-y-auto">
+                {/* Cabecera del Usuario */}
+                <section className="flex flex-col items-center text-center gap-6">
+                    <div className="size-28 rounded-full border-4 border-primary/10 p-1 overflow-hidden shadow-xl aspect-square bg-slate-50">
+                        <img src="https://picsum.photos/seed/user/200" className="w-full h-full object-cover rounded-full" alt="Usuario" />
+                    </div>
+                    <div className="space-y-1">
+                        <h1 className="text-3xl font-black text-primary leading-none tracking-tighter italic font-bold">
+                            {userName}
+                        </h1>
+                        <p className="text-secondary font-bold text-sm">Socio Cuidapp+ Protegido</p>
+                    </div>
+                </section>
+
+                {/* Viaje Activo Sincronizado */}
+                {activeTrip && activeTrip.status !== 'completed' && activeTrip.status !== 'finished' && (
+                    <section className="bg-primary/5 border-2 border-primary/20 p-6 rounded-[2.5rem] shadow-md animate-in slide-in-from-top duration-500">
+                        <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center gap-3">
+                                <div className="size-12 rounded-full bg-primary flex items-center justify-center text-white shadow-lg animate-pulse">
+                                    <span className="material-symbols-outlined font-bold">local_taxi</span>
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-black italic text-primary leading-none">Viaje en curso</h3>
+                                    <p className="text-secondary font-bold text-[11px] mt-1">{activeTrip.assistant?.name || 'Elena Martínez'} está en camino a recoger a Papá</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Simulador de Ritmo Cardíaco */}
+                        <div className="mt-4 flex flex-col gap-3">
+                            <div className="flex items-center justify-between bg-white p-4 rounded-2xl border border-slate-100 shadow-sm relative overflow-hidden">
+                                <div className="flex items-center gap-3">
+                                    <span className={`material-symbols-outlined text-3xl transition-colors ${bpm > 100 ? 'text-orange-500 animate-pulse' : 'text-red-400'}`}>favorite</span>
+                                    <div>
+                                        <p className="text-[10px] font-black text-slate-400">Pulso cardíaco</p>
+                                        <p className={`text-xl font-black italic transition-colors ${bpm > 100 ? 'text-orange-500' : 'text-secondary'}`}>{bpm} BPM</p>
+                                    </div>
+                                </div>
+                                <button onClick={simulateHighPulse} className="px-3 py-1 bg-slate-50 text-slate-400 text-[10px] rounded-lg border border-slate-200 active:bg-slate-100 font-bold italic">Simular</button>
+                            </div>
+
+                            {showPulseAlert && (
+                                <div className="bg-orange-500/10 border-2 border-orange-500 p-4 rounded-2xl flex items-start gap-3 animate-in shake duration-300">
+                                    <span className="material-symbols-outlined text-orange-500 font-bold mt-0.5">warning</span>
+                                    <p className="text-orange-600 font-bold text-[11px] leading-snug italic">Aviso: Ritmo cardíaco elevado detectado. Elena está informada.</p>
+                                </div>
+                            )}
+                        </div>
+
+                        <button className="w-full mt-4 py-4 bg-primary text-white rounded-2xl font-black italic shadow-lg shadow-primary/30 active:scale-95 transition-all flex items-center justify-center gap-2">
+                            <span className="material-symbols-outlined">map</span>
+                            Ver mapa en vivo
+                        </button>
+                    </section>
+                )}
+
+                {/* Sección Familiares */}
+                <section className="space-y-6">
+                    <div className="flex flex-col gap-1 ml-2">
+                        <h3 className="text-sm font-black text-primary tracking-wider italic font-bold">Familiares responsables</h3>
+                        <p className="text-xs font-medium text-secondary/60">Personas que reciben tus alertas de seguridad.</p>
+                    </div>
+
+                    <div className="space-y-4">
+                        {/* Familiar 1 - CONTACTO PRINCIPAL */}
+                        {record?.emergencyContact && record.emergencyContact.name && (
+                            <div className="bg-white border-4 border-primary/20 p-6 rounded-[2.5rem] shadow-xl flex items-center justify-between relative">
+                                <div className="absolute -top-3 left-8 bg-primary text-white text-[8px] font-black px-4 py-1 rounded-full">
+                                    Contacto principal
+                                </div>
+                                <div className="flex items-center gap-5 pt-2">
+                                    <div className="size-16 rounded-2xl bg-primary/5 text-primary flex items-center justify-center">
+                                        <span className="material-symbols-outlined text-4xl font-bold">family_restroom</span>
+                                    </div>
+                                    <div>
+                                        <p className="text-[10px] font-black text-slate-400 leading-none mb-1">
+                                            {record.emergencyContact.relationship}
+                                        </p>
+                                        <p className="text-xl font-black text-secondary leading-none">{record.emergencyContact.name}</p>
+                                        <p className="text-secondary font-black text-xs mt-2">{record.emergencyContact.phone}</p>
+                                    </div>
+                                </div>
+                                <a href={`tel:${record.emergencyContact.phone}`} className="size-14 rounded-2xl bg-primary text-white flex items-center justify-center shadow-lg active:scale-90 transition-all">
+                                    <span className="material-symbols-outlined text-2xl fill-1">call</span>
+                                </a>
+                            </div>
+                        )}
+
+                        {/* Familiar 2 */}
+                        {record?.emergencyContact2 && record.emergencyContact2.name && (
+                            <div className="bg-white border-2 border-slate-50 p-6 rounded-[2.5rem] shadow-xl flex items-center justify-between">
+                                <div className="flex items-center gap-5">
+                                    <div className="size-16 rounded-2xl bg-primary/5 text-primary flex items-center justify-center">
+                                        <span className="material-symbols-outlined text-4xl font-bold">family_restroom</span>
+                                    </div>
+                                    <div>
+                                        <p className="text-[10px] font-black text-slate-400 leading-none mb-1">
+                                            {record.emergencyContact2.relationship}
+                                        </p>
+                                        <p className="text-xl font-black text-secondary leading-none">{record.emergencyContact2.name}</p>
+                                        <p className="text-secondary font-black text-xs mt-2">{record.emergencyContact2.phone}</p>
+                                    </div>
+                                </div>
+                                <a href={`tel:${record.emergencyContact2.phone}`} className="size-14 rounded-2xl bg-primary text-white flex items-center justify-center shadow-lg active:scale-90 transition-all">
+                                    <span className="material-symbols-outlined text-2xl fill-1">call</span>
+                                </a>
+                            </div>
+                        )}
+
+                        {(!record?.emergencyContact2?.name) && (
+                            <button
+                                onClick={() => navigate('/onboarding-medical')}
+                                className="w-full py-6 border-2 border-dashed border-primary/20 rounded-[2rem] flex items-center justify-center gap-3 text-primary font-black text-sm active:bg-primary/5 transition-all"
+                            >
+                                <span className="material-symbols-outlined">add_circle</span>
+                                Añadir segundo contacto
+                            </button>
+                        )}
+                    </div>
+                </section>
+
+                {/* Sección Médica */}
+                <section className="space-y-6">
+                    <div className="flex flex-col gap-1 ml-2">
+                        <h3 className="text-sm font-black text-primary tracking-wider italic font-bold">Apoyo médico</h3>
+                        <p className="text-xs font-medium text-secondary/60">Profesionales de salud vinculados a tu perfil.</p>
+                    </div>
+
+                    {record?.doctor && record.doctor.name ? (
+                        <div className="bg-slate-50 border-2 border-slate-100 p-8 rounded-[2.5rem] flex items-center justify-between shadow-md">
+                            <div className="flex items-center gap-5">
+                                <div className="size-16 rounded-full bg-white flex items-center justify-center text-primary shadow-sm border border-slate-100">
+                                    <span className="material-symbols-outlined text-4xl font-bold">medical_services</span>
+                                </div>
+                                <div>
+                                    <p className="text-[10px] font-black text-slate-400 leading-none mb-1">Médico de cabecera</p>
+                                    <p className="text-xl font-black text-secondary leading-none">{record.doctor.name}</p>
+                                    <p className="text-secondary font-black text-xs mt-2">{record.doctor.phone}</p>
+                                </div>
+                            </div>
+                            <a href={`tel:${record.doctor.phone}`} className="size-14 rounded-2xl bg-secondary text-white flex items-center justify-center shadow-lg active:scale-90 transition-all">
+                                <span className="material-symbols-outlined text-2xl fill-1">call</span>
+                            </a>
+                        </div>
+                    ) : (
+                        <div className="bg-slate-50 border-2 border-slate-100 p-8 rounded-[2.5rem] flex flex-col items-center justify-center text-center gap-4">
+                            <div className="size-16 rounded-full bg-white flex items-center justify-center text-primary shadow-sm">
+                                <span className="material-symbols-outlined text-4xl font-bold">medical_services</span>
+                            </div>
+                            <div>
+                                <p className="text-lg font-black text-secondary">Doctor de cabecera</p>
+                                <p className="text-xs font-bold text-slate-400 mt-1 leading-relaxed">Asigna a tu médico para transferir tu ficha en emergencias.</p>
+                            </div>
+                            <button
+                                onClick={() => navigate('/onboarding-medical')}
+                                className="bg-primary text-white px-8 py-3 rounded-2xl font-black text-sm shadow-md active:scale-95 transition-all mt-2"
+                            >
+                                Asignar médico ahora
+                            </button>
+                        </div>
+                    )}
+                </section>
+
+                {/* Info Privacidad */}
+                <section className="p-8 bg-primary/5 rounded-[2.5rem] border border-primary/10 flex gap-5 mb-12">
+                    <span className="material-symbols-outlined text-primary text-3xl font-bold">lock_person</span>
+                    <p className="text-xs text-secondary font-bold leading-relaxed">
+                        Información protegida. Solo tus contactos autorizados pueden acceder a tus datos médicos en caso de SOS activo.
                     </p>
-                    <p className="text-xl font-black text-secondary leading-none">{record.emergencyContact.name}</p>
-                    <p className="text-secondary font-black text-xs mt-2">{record.emergencyContact.phone}</p>
-                  </div>
-                </div>
-                <a href={`tel:${record.emergencyContact.phone}`} className="size-14 rounded-2xl bg-primary text-white flex items-center justify-center shadow-lg active:scale-90 transition-all">
-                  <span className="material-symbols-outlined text-2xl fill-1">call</span>
-                </a>
-              </div>
-            )}
-
-            {/* Familiar 2 */}
-            {record?.emergencyContact2 && record.emergencyContact2.name && (
-              <div className="bg-white border-2 border-slate-50 p-6 rounded-[2.5rem] shadow-xl flex items-center justify-between">
-                <div className="flex items-center gap-5">
-                  <div className="size-16 rounded-2xl bg-primary/5 text-primary flex items-center justify-center">
-                    <span className="material-symbols-outlined text-4xl font-bold">family_restroom</span>
-                  </div>
-                  <div>
-                    <p className="text-[10px] font-black text-slate-400 leading-none mb-1">
-                      {record.emergencyContact2.relationship}
-                    </p>
-                    <p className="text-xl font-black text-secondary leading-none">{record.emergencyContact2.name}</p>
-                    <p className="text-secondary font-black text-xs mt-2">{record.emergencyContact2.phone}</p>
-                  </div>
-                </div>
-                <a href={`tel:${record.emergencyContact2.phone}`} className="size-14 rounded-2xl bg-primary text-white flex items-center justify-center shadow-lg active:scale-90 transition-all">
-                  <span className="material-symbols-outlined text-2xl fill-1">call</span>
-                </a>
-              </div>
-            )}
-
-            {(!record?.emergencyContact2?.name) && (
-              <button
-                onClick={() => navigate('/onboarding-medical')}
-                className="w-full py-6 border-2 border-dashed border-primary/20 rounded-[2rem] flex items-center justify-center gap-3 text-primary font-black text-sm active:bg-primary/5 transition-all"
-              >
-                <span className="material-symbols-outlined">add_circle</span>
-                Añadir segundo contacto
-              </button>
-            )}
-          </div>
-        </section>
-
-        {/* Sección Médica */}
-        <section className="space-y-6">
-          <div className="flex flex-col gap-1 ml-2">
-            <h3 className="text-sm font-black text-primary tracking-wider">Apoyo médico</h3>
-            <p className="text-xs font-medium text-secondary/60">Profesionales de salud vinculados a tu perfil.</p>
-          </div>
-
-          {record?.doctor && record.doctor.name ? (
-            <div className="bg-slate-50 border-2 border-slate-100 p-8 rounded-[2.5rem] flex items-center justify-between shadow-md">
-              <div className="flex items-center gap-5">
-                <div className="size-16 rounded-full bg-white flex items-center justify-center text-primary shadow-sm border border-slate-100">
-                  <span className="material-symbols-outlined text-4xl font-bold">medical_services</span>
-                </div>
-                <div>
-                  <p className="text-[10px] font-black text-slate-400 leading-none mb-1">Médico de cabecera</p>
-                  <p className="text-xl font-black text-secondary leading-none">{record.doctor.name}</p>
-                  <p className="text-secondary font-black text-xs mt-2">{record.doctor.phone}</p>
-                </div>
-              </div>
-              <a href={`tel:${record.doctor.phone}`} className="size-14 rounded-2xl bg-secondary text-white flex items-center justify-center shadow-lg active:scale-90 transition-all">
-                <span className="material-symbols-outlined text-2xl fill-1">call</span>
-              </a>
-            </div>
-          ) : (
-            <div className="bg-slate-50 border-2 border-slate-100 p-8 rounded-[2.5rem] flex flex-col items-center justify-center text-center gap-4">
-              <div className="size-16 rounded-full bg-white flex items-center justify-center text-primary shadow-sm">
-                <span className="material-symbols-outlined text-4xl font-bold">medical_services</span>
-              </div>
-              <div>
-                <p className="text-lg font-black text-secondary">Doctor de cabecera</p>
-                <p className="text-xs font-bold text-slate-400 mt-1 leading-relaxed">Asigna a tu médico para transferir tu ficha en emergencias.</p>
-              </div>
-              <button
-                onClick={() => navigate('/onboarding-medical')}
-                className="bg-primary text-white px-8 py-3 rounded-2xl font-black text-sm shadow-md active:scale-95 transition-all mt-2"
-              >
-                Asignar médico ahora
-              </button>
-            </div>
-          )}
-        </section>
-
-        {/* Info Privacidad */}
-        <section className="p-8 bg-primary/5 rounded-[2.5rem] border border-primary/10 flex gap-5 mb-12">
-          <span className="material-symbols-outlined text-primary text-3xl font-bold">lock_person</span>
-          <p className="text-xs text-secondary font-bold leading-relaxed">
-            Información protegida. Solo tus contactos autorizados pueden acceder a tus datos médicos en caso de SOS activo.
-          </p>
-        </section>
-      </main>
-    </div>
-  );
+                </section>
+            </main>
+        </div>
+    );
 };
 
 export default FamilyDashboardPage;

@@ -1,0 +1,386 @@
+[
+  {
+    "file": "components/AccountPage.tsx",
+    "improvements": [
+      "Eliminadas clases uppercase para asegurar Sentence case en UI",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "components/ActiveTripPage.tsx",
+    "improvements": [
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "components/AssistantConfigPage.tsx",
+    "improvements": [
+      "Eliminadas clases uppercase para asegurar Sentence case en UI",
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "components/AssistantDashboardPage.tsx",
+    "improvements": [
+      "Eliminadas clases uppercase para asegurar Sentence case en UI",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "components/AssistantEarningsPage.tsx",
+    "improvements": [
+      "Eliminadas clases uppercase para asegurar Sentence case en UI",
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "components/AssistantQRPage.tsx",
+    "improvements": [
+      "Eliminadas clases uppercase para asegurar Sentence case en UI",
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "components/CheckoutPage.tsx",
+    "improvements": [
+      "Eliminadas clases uppercase para asegurar Sentence case en UI",
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "components/EmergencyDetailView.tsx",
+    "improvements": [
+      "Eliminadas clases uppercase para asegurar Sentence case en UI",
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "components/FamilyDashboardPage.tsx",
+    "improvements": [
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "components/HealthAdvice.tsx",
+    "improvements": [
+      "Eliminado color negro y reemplazado por paleta oficial (#6C5CE7 / primary)",
+      "Eliminadas clases uppercase para asegurar Sentence case en UI",
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "components/HealthMonitoringPage.tsx",
+    "improvements": [
+      "Eliminadas clases uppercase para asegurar Sentence case en UI",
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "components/Layout.tsx",
+    "improvements": [
+      "Eliminadas clases uppercase para asegurar Sentence case en UI",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "components/LiveAssistant.tsx",
+    "improvements": [
+      "Eliminado color negro y reemplazado por paleta oficial (#6C5CE7 / primary)",
+      "Eliminadas clases uppercase para asegurar Sentence case en UI",
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "components/LoginPage.tsx",
+    "improvements": [
+      "Eliminado color negro y reemplazado por paleta oficial (#6C5CE7 / primary)",
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)"
+    ]
+  },
+  {
+    "file": "components/MedicalRecordPage.tsx",
+    "improvements": [
+      "Eliminadas clases uppercase para asegurar Sentence case en UI",
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "components/MemberHomePage.tsx",
+    "improvements": [
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "components/OnboardingMedical.tsx",
+    "improvements": [
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "components/PlanSelectionPage.tsx",
+    "improvements": [
+      "Eliminadas clases uppercase para asegurar Sentence case en UI",
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "components/RoleSelectorPage.tsx",
+    "improvements": [
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)"
+    ]
+  },
+  {
+    "file": "components/SOSAlertPage.tsx",
+    "improvements": [
+      "Eliminado color negro y reemplazado por paleta oficial (#6C5CE7 / primary)",
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "components/SignUpPage.tsx",
+    "improvements": [
+      "Eliminadas clases uppercase para asegurar Sentence case en UI",
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)"
+    ]
+  },
+  {
+    "file": "components/TripBookingPage.tsx",
+    "improvements": [
+      "Eliminadas clases uppercase para asegurar Sentence case en UI",
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "components/TripSummaryPage.tsx",
+    "improvements": [
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Eliminadas variables default hardcoded (Carlos, Elena)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "App.tsx",
+    "improvements": [
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)"
+    ]
+  },
+  {
+    "file": "../Cuidapp-Assistant-App/components/AccountPage.tsx",
+    "improvements": [
+      "Eliminadas clases uppercase para asegurar Sentence case en UI",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "../Cuidapp-Assistant-App/components/ActiveTripPage.tsx",
+    "improvements": [
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "../Cuidapp-Assistant-App/components/AssistantConfigPage.tsx",
+    "improvements": [
+      "Eliminadas clases uppercase para asegurar Sentence case en UI",
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "../Cuidapp-Assistant-App/components/AssistantDashboardPage.tsx",
+    "improvements": [
+      "Eliminadas clases uppercase para asegurar Sentence case en UI",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "../Cuidapp-Assistant-App/components/AssistantEarningsPage.tsx",
+    "improvements": [
+      "Eliminadas clases uppercase para asegurar Sentence case en UI",
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "../Cuidapp-Assistant-App/components/AssistantLoginPage.tsx",
+    "improvements": [
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)"
+    ]
+  },
+  {
+    "file": "../Cuidapp-Assistant-App/components/AssistantQRPage.tsx",
+    "improvements": [
+      "Eliminadas clases uppercase para asegurar Sentence case en UI",
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "../Cuidapp-Assistant-App/components/AssistantSignupPage.tsx",
+    "improvements": [
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)"
+    ]
+  },
+  {
+    "file": "../Cuidapp-Assistant-App/components/AssistantWelcomePage.tsx",
+    "improvements": [
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)"
+    ]
+  },
+  {
+    "file": "../Cuidapp-Assistant-App/components/CheckoutPage.tsx",
+    "improvements": [
+      "Eliminadas clases uppercase para asegurar Sentence case en UI",
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "../Cuidapp-Assistant-App/components/EmergencyDetailView.tsx",
+    "improvements": [
+      "Eliminadas clases uppercase para asegurar Sentence case en UI",
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "../Cuidapp-Assistant-App/components/FamilyDashboardPage.tsx",
+    "improvements": [
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "../Cuidapp-Assistant-App/components/HealthAdvice.tsx",
+    "improvements": [
+      "Eliminado color negro y reemplazado por paleta oficial (#6C5CE7 / primary)",
+      "Eliminadas clases uppercase para asegurar Sentence case en UI",
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "../Cuidapp-Assistant-App/components/HealthMonitoringPage.tsx",
+    "improvements": [
+      "Eliminadas clases uppercase para asegurar Sentence case en UI",
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "../Cuidapp-Assistant-App/components/Layout.tsx",
+    "improvements": [
+      "Eliminadas clases uppercase para asegurar Sentence case en UI",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "../Cuidapp-Assistant-App/components/LiveAssistant.tsx",
+    "improvements": [
+      "Eliminado color negro y reemplazado por paleta oficial (#6C5CE7 / primary)",
+      "Eliminadas clases uppercase para asegurar Sentence case en UI",
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "../Cuidapp-Assistant-App/components/LoginPage.tsx",
+    "improvements": [
+      "Eliminado color negro y reemplazado por paleta oficial (#6C5CE7 / primary)",
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)"
+    ]
+  },
+  {
+    "file": "../Cuidapp-Assistant-App/components/MedicalRecordPage.tsx",
+    "improvements": [
+      "Eliminadas clases uppercase para asegurar Sentence case en UI",
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "../Cuidapp-Assistant-App/components/MemberHomePage.tsx",
+    "improvements": [
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "../Cuidapp-Assistant-App/components/OnboardingMedical.tsx",
+    "improvements": [
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "../Cuidapp-Assistant-App/components/PlanSelectionPage.tsx",
+    "improvements": [
+      "Eliminadas clases uppercase para asegurar Sentence case en UI",
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "../Cuidapp-Assistant-App/components/RoleSelectorPage.tsx",
+    "improvements": [
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)"
+    ]
+  },
+  {
+    "file": "../Cuidapp-Assistant-App/components/SOSAlertPage.tsx",
+    "improvements": [
+      "Eliminado color negro y reemplazado por paleta oficial (#6C5CE7 / primary)",
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "../Cuidapp-Assistant-App/components/SignUpPage.tsx",
+    "improvements": [
+      "Eliminadas clases uppercase para asegurar Sentence case en UI",
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)"
+    ]
+  },
+  {
+    "file": "../Cuidapp-Assistant-App/components/TripBookingPage.tsx",
+    "improvements": [
+      "Eliminadas clases uppercase para asegurar Sentence case en UI",
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "../Cuidapp-Assistant-App/components/TripSummaryPage.tsx",
+    "improvements": [
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)",
+      "Eliminadas variables default hardcoded (Carlos, Elena)",
+      "Añadida clase italic y font-bold a títulos y botones."
+    ]
+  },
+  {
+    "file": "../Cuidapp-Assistant-App/App.tsx",
+    "improvements": [
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)"
+    ]
+  },
+  {
+    "file": "../Cuidapp-Assistant-App/App_Safe.tsx",
+    "improvements": [
+      "Añadido pb-[160px] en el contenedor principal de la vista (Evita bloqueos de scroll)"
+    ]
+  }
+]
