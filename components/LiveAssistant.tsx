@@ -63,8 +63,13 @@ const LiveAssistant: React.FC = () => {
 
  const startSession = async () => {
  if (isConnecting || isActive) return;
+ const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+ if (!apiKey) {
+   console.warn('VITE_GEMINI_API_KEY no encontrada. Asistente de voz desactivado.');
+   return;
+ }
  setIsConnecting(true);
- const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+ const ai = new GoogleGenAI({ apiKey });
  
  const inputAudioContext = new (window.AudioContext || (window as any).webkitAudioContext)({sampleRate: 16000});
  const outputAudioContext = new (window.AudioContext || (window as any).webkitAudioContext)({sampleRate: 24000});

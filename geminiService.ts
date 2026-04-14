@@ -1,16 +1,22 @@
 
 import { GoogleGenAI, Type, Modality } from "@google/genai";
 
+// Defensive initialization: disable AI silently if key is missing
+const _apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+if (!_apiKey) {
+  console.warn('VITE_GEMINI_API_KEY no encontrada. IA desactivada.');
+}
+
 export class GeminiService {
-  private ai: GoogleGenAI;
+  private ai: GoogleGenAI | null;
 
   constructor() {
-    // Fix: Use process.env.API_KEY directly for initialization as per GenAI guidelines
-    this.ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    this.ai = _apiKey ? new GoogleGenAI({ apiKey: _apiKey }) : null;
   }
 
   // General Chat with Search Grounding
   async chatWithSearch(prompt: string) {
+    if (!this.ai) return { text: 'IA no disponible (sin API Key).', grounding: [] };
     const response = await this.ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: [{ role: 'user', parts: [{ text: prompt }] }],
@@ -27,6 +33,7 @@ export class GeminiService {
 
   // Maps Grounding for finding places
   async findNearbyServices(query: string, lat?: number, lng?: number) {
+    if (!this.ai) return { text: 'IA no disponible (sin API Key).', grounding: [] };
     const response = await this.ai.models.generateContent({
       model: 'gemini-2.5-flash',
       contents: [{ role: 'user', parts: [{ text: query }] }],
@@ -47,6 +54,7 @@ export class GeminiService {
 
   // Image Analysis
   async analyzeImage(prompt: string, base64Image: string, mimeType: string) {
+    if (!this.ai) return 'IA no disponible (sin API Key).';
     const response = await this.ai.models.generateContent({
       model: 'gemini-3-pro-preview',
       contents: {
@@ -61,6 +69,7 @@ export class GeminiService {
 
   // Thinking Mode for complex health reasoning
   async complexHealthReasoning(query: string) {
+    if (!this.ai) return 'IA no disponible (sin API Key).';
     const response = await this.ai.models.generateContent({
       model: 'gemini-3-pro-preview',
       contents: [{ role: 'user', parts: [{ text: query }] }],
@@ -73,6 +82,7 @@ export class GeminiService {
 
   // TTS
   async generateSpeech(text: string): Promise<string | undefined> {
+    if (!this.ai) return undefined;
     const response = await this.ai.models.generateContent({
       model: "gemini-2.5-flash-preview-tts",
       contents: [{ parts: [{ text }] }],
