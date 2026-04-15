@@ -5,7 +5,7 @@ const AssistantWelcomePage: React.FC = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="flex-1 bg-white font-plus flex flex-col p-8 items-center justify-center text-center overflow-hidden relative">
+        <div className="flex-1 bg-white font-plus flex flex-col px-6 py-8 items-center justify-center text-center overflow-hidden relative">
             {/* Background design accents */}
             <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-primary/5 to-transparent"></div>
             
@@ -15,40 +15,28 @@ const AssistantWelcomePage: React.FC = () => {
                     <span className="material-symbols-outlined text-4xl text-white fill-1">shield_with_heart</span>
                 </div>
                 <h1 className="text-4xl font-black italic tracking-tighter text-primary mb-2">Cuidapp+</h1>
-                <p className="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-black italic">Assistant App</p>
+                <p className="text-[10px] tracking-[0.3em] uppercase text-slate-400 font-black italic mt-1 mb-8">Assistant App</p>
             </div>
 
-            <div className="space-y-6 max-w-[300px] z-10">
-                <p className="text-slate-500 font-medium italic text-base leading-tight max-w-[260px] mx-auto">
+            <div className="z-10">
+                <p className="text-base italic font-medium text-slate-500 text-center leading-relaxed px-12 mb-12">
                     Gestiona acompañamientos, monitorea salud y genera bienestar en tiempo real.
                 </p>
             </div>
 
-            <div className="mt-16 w-full max-w-sm relative z-10 space-y-4 px-6 md:px-0">
+            <div className="w-full max-w-sm relative z-10 space-y-4">
                 <button
                     onClick={() => navigate('/login')}
-                    className="w-full bg-[#6C5CE7] text-white p-7 rounded-[2.5rem] shadow-xl shadow-primary/10 active:scale-[0.97] transition-all group text-left flex items-center gap-5 border-none italic"
+                    className="w-full py-8 rounded-[2.5rem] bg-[#7C3AED] text-white font-black italic text-xl shadow-xl shadow-primary/20 active:scale-[0.97] transition-all"
                 >
-                    <div className="size-14 bg-white/20 rounded-2xl flex items-center justify-center text-white shrink-0 group-hover:scale-110 transition-transform">
-                        <span className="material-symbols-outlined text-3xl font-bold">login</span>
-                    </div>
-                    <div className="flex flex-col justify-center">
-                        <p className="text-[20px] font-black italic leading-none tracking-tight mb-1">Iniciar Sesión</p>
-                        <p className="text-[13px] font-medium text-white/90 leading-tight">Acceso a red de asistentes.</p>
-                    </div>
+                    Iniciar Sesión
                 </button>
 
                 <button
                     onClick={() => navigate('/signup')}
-                    className="w-full bg-[#A29BFE] text-white p-7 rounded-[2.5rem] shadow-xl shadow-indigo-500/10 active:scale-[0.97] transition-all group text-left flex items-center gap-5 border-none italic"
+                    className="w-full py-8 rounded-[2.5rem] bg-[#7C3AED]/10 text-[#7C3AED] font-black italic text-xl shadow-sm active:scale-[0.97] transition-all"
                 >
-                    <div className="size-14 bg-white/20 rounded-2xl flex items-center justify-center text-white shrink-0 group-hover:scale-110 transition-transform">
-                        <span className="material-symbols-outlined text-3xl font-bold">person_add</span>
-                    </div>
-                    <div className="flex flex-col justify-center">
-                        <p className="text-[20px] font-black italic leading-none tracking-tight mb-1">Unirse al equipo</p>
-                        <p className="text-[13px] font-medium text-white/90 leading-tight">Postularme como nuevo asistente.</p>
-                    </div>
+                    Unirse al equipo
                 </button>
             </div>
 
