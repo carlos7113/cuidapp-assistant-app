@@ -9,6 +9,7 @@ import ActiveTripPage from './components/ActiveTripPage';
 import LoginPage from './components/LoginPage';
 import RoleSelectorPage from './components/RoleSelectorPage';
 import AssistantLoginPage from './components/AssistantLoginPage';
+import AssistantWelcomePage from './components/AssistantWelcomePage';
 
 // ─── Punto de entrada exclusivo para la App del Asistente (Elena Martínez) ───
 // Esta app SOLO gestiona el panel del asistente. No tiene flujo de usuario/cliente.
@@ -33,10 +34,11 @@ const App: React.FC = () => {
     <div className="min-h-screen bg-white max-w-[480px] mx-auto relative shadow-2xl overflow-hidden flex flex-col">
       <Router>
         <Routes>
-          {/* Ruta principal: Selección de Perfil Asistente */}
-          <Route path="/" element={<AssistantLoginPage />} />
+          {/* Ruta principal: Bienvenida */}
+          <Route path="/" element={<AssistantWelcomePage />} />
+          <Route path="/login" element={<AssistantLoginPage />} />
           <Route path="/role-select" element={<RoleSelectorPage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/legacy-login" element={<LoginPage />} />
           
           {/* Dashboard y Panel del Asistente */}
           <Route 
