@@ -15,11 +15,11 @@ const AssistantWelcomePage: React.FC = () => {
                     <span className="material-symbols-outlined text-4xl text-white fill-1">shield_with_heart</span>
                 </div>
                 <h1 className="text-4xl font-black italic tracking-tighter text-primary mb-2">Cuidapp+</h1>
-                <p className="text-secondary font-bold italic text-lg leading-tight uppercase tracking-[0.15em] opacity-60">Assistant App</p>
+                <p className="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-black italic">Assistant App</p>
             </div>
 
             <div className="space-y-6 max-w-[300px] z-10">
-                <p className="text-slate-500 font-bold italic text-base leading-tight max-w-[260px] mx-auto">
+                <p className="text-slate-500 font-medium italic text-base leading-tight max-w-[260px] mx-auto">
                     Gestiona acompañamientos, monitorea salud y genera bienestar en tiempo real.
                 </p>
             </div>
