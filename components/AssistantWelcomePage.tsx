@@ -19,18 +19,15 @@ const AssistantWelcomePage: React.FC = () => {
             </div>
 
             <div className="space-y-6 max-w-[300px] z-10">
-                <h2 className="text-2xl font-black text-slate-800 leading-tight italic">
-                    Independencia para ellos, tranquilidad para ti.
-                </h2>
-                <p className="text-slate-500 font-medium text-sm leading-relaxed">
+                <p className="text-slate-600 font-bold italic text-xl leading-relaxed">
                     Gestiona acompañamientos, monitorea salud y genera bienestar en tiempo real.
                 </p>
             </div>
 
-            <div className="mt-16 w-full max-w-[280px] z-10">
+            <div className="mt-16 w-full max-w-[280px] z-10 space-y-4">
                 <button
                     onClick={() => navigate('/login')}
-                    className="w-full bg-primary text-white py-6 rounded-[2rem] font-black italic text-xl shadow-2xl shadow-primary/30 active:scale-95 transition-all group overflow-hidden relative"
+                    className="w-full bg-primary text-white py-6 rounded-[2rem] font-black italic text-xl shadow-2xl shadow-primary/30 active:scale-95 transition-all group overflow-hidden relative border-none"
                 >
                     <span className="relative z-10 flex items-center justify-center gap-2">
                         Iniciar Sesión
@@ -38,10 +35,17 @@ const AssistantWelcomePage: React.FC = () => {
                     </span>
                     <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
                 </button>
+
+                <button
+                    onClick={() => navigate('/signup')}
+                    className="w-full bg-slate-50 border-2 border-slate-200 text-slate-500 py-6 rounded-[2rem] font-black italic text-sm active:scale-95 transition-all hover:bg-white hover:border-primary/20 hover:text-primary"
+                >
+                    Crear nuevo asistente / Postularme al equipo
+                </button>
             </div>
 
             <div className="absolute bottom-12 flex flex-col items-center gap-2 opacity-30">
-                <p className="text-[10px] font-bold text-slate-500 tracking-[0.3em] uppercase">Red de Acompañamiento</p>
+                <p className="text-[10px] font-bold text-slate-500 tracking-[0.3em] uppercase">Cuidapp+ Partner v1.0 • 2026</p>
                 <div className="h-1 w-12 bg-primary/30 rounded-full"></div>
             </div>
         </div>
