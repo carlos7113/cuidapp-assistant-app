@@ -36,18 +36,20 @@ const App: React.FC = () => {
   }
 
   return (
-    <Router>
-      <Routes>
-        {/* Ruta principal: Panel del Asistente */}
-        <Route path="/" element={<AssistantDashboardPage />} />
-        <Route path="/earnings" element={<AssistantEarningsPage />} />
-        <Route path="/qr" element={<AssistantQRPage />} />
-        <Route path="/active-trip" element={<ActiveTripPage />} />
-        <Route path="/live-assistant" element={<LiveAssistant />} />
-        {/* Redireccionar cualquier ruta desconocida al panel */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </Router>
+    <div className="min-h-screen bg-white max-w-[480px] mx-auto relative shadow-2xl overflow-hidden flex flex-col">
+      <Router>
+        <Routes>
+          {/* Ruta principal: Panel del Asistente */}
+          <Route path="/" element={<AssistantDashboardPage />} />
+          <Route path="/earnings" element={<AssistantEarningsPage />} />
+          <Route path="/qr" element={<AssistantQRPage />} />
+          <Route path="/active-trip" element={<ActiveTripPage />} />
+          <Route path="/live-assistant" element={<LiveAssistant />} />
+          {/* Redireccionar cualquier ruta desconocida al panel */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Router>
+    </div>
   );
 };
 
