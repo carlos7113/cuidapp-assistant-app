@@ -19,28 +19,36 @@ const AssistantWelcomePage: React.FC = () => {
             </div>
 
             <div className="space-y-6 max-w-[300px] z-10">
-                <p className="text-slate-600 font-bold italic text-xl leading-relaxed">
+                <p className="text-slate-500 font-bold italic text-base leading-tight max-w-[260px] mx-auto">
                     Gestiona acompañamientos, monitorea salud y genera bienestar en tiempo real.
                 </p>
             </div>
 
-            <div className="mt-16 w-full max-w-[280px] z-10 space-y-4">
+            <div className="mt-16 w-full max-w-sm relative z-10 space-y-4 px-6 md:px-0">
                 <button
                     onClick={() => navigate('/login')}
-                    className="w-full bg-primary text-white py-6 rounded-[2rem] font-black italic text-xl shadow-2xl shadow-primary/30 active:scale-95 transition-all group overflow-hidden relative border-none"
+                    className="w-full bg-[#6C5CE7] text-white p-7 rounded-[2.5rem] shadow-xl shadow-primary/10 active:scale-[0.97] transition-all group text-left flex items-center gap-5 border-none italic"
                 >
-                    <span className="relative z-10 flex items-center justify-center gap-2">
-                        Iniciar Sesión
-                        <span className="material-symbols-outlined font-bold group-hover:translate-x-2 transition-transform">arrow_forward_ios</span>
-                    </span>
-                    <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                    <div className="size-14 bg-white/20 rounded-2xl flex items-center justify-center text-white shrink-0 group-hover:scale-110 transition-transform">
+                        <span className="material-symbols-outlined text-3xl font-bold">login</span>
+                    </div>
+                    <div className="flex flex-col justify-center">
+                        <p className="text-[20px] font-black italic leading-none tracking-tight mb-1">Iniciar Sesión</p>
+                        <p className="text-[13px] font-medium text-white/90 leading-tight">Acceso a red de asistentes.</p>
+                    </div>
                 </button>
 
                 <button
                     onClick={() => navigate('/signup')}
-                    className="w-full bg-slate-50 border-2 border-slate-200 text-slate-500 py-6 rounded-[2rem] font-black italic text-sm active:scale-95 transition-all hover:bg-white hover:border-primary/20 hover:text-primary"
+                    className="w-full bg-[#A29BFE] text-white p-7 rounded-[2.5rem] shadow-xl shadow-indigo-500/10 active:scale-[0.97] transition-all group text-left flex items-center gap-5 border-none italic"
                 >
-                    Crear nuevo asistente / Postularme al equipo
+                    <div className="size-14 bg-white/20 rounded-2xl flex items-center justify-center text-white shrink-0 group-hover:scale-110 transition-transform">
+                        <span className="material-symbols-outlined text-3xl font-bold">person_add</span>
+                    </div>
+                    <div className="flex flex-col justify-center">
+                        <p className="text-[20px] font-black italic leading-none tracking-tight mb-1">Unirse al equipo</p>
+                        <p className="text-[13px] font-medium text-white/90 leading-tight">Postularme como nuevo asistente.</p>
+                    </div>
                 </button>
             </div>
 
