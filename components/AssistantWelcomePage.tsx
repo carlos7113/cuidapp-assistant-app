@@ -5,7 +5,7 @@ const AssistantWelcomePage: React.FC = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="flex-1 bg-white font-plus flex flex-col px-6 py-8 items-center justify-center text-center overflow-hidden relative">
+        <div className="flex-1 bg-white font-plus flex flex-col px-6 pt-12 items-center justify-center text-center overflow-y-auto relative">
             {/* Background design accents */}
             <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-primary/5 to-transparent"></div>
             
@@ -27,20 +27,32 @@ const AssistantWelcomePage: React.FC = () => {
             <div className="w-full max-w-sm relative z-10 space-y-4">
                 <button
                     onClick={() => navigate('/login')}
-                    className="w-full py-8 rounded-[2.5rem] bg-[#7C3AED] text-white font-black italic text-xl shadow-xl shadow-primary/20 active:scale-[0.97] transition-all"
+                    className="w-full bg-[#7C3AED] text-white p-7 py-8 rounded-[2.5rem] shadow-xl shadow-primary/10 active:scale-[0.97] transition-all group text-left flex items-center gap-5 border-none italic"
                 >
-                    Iniciar Sesión
+                    <div className="size-14 bg-white/20 rounded-2xl flex items-center justify-center text-white shrink-0 group-hover:scale-110 transition-transform">
+                        <span className="material-symbols-outlined text-3xl font-bold">login</span>
+                    </div>
+                    <div className="flex flex-col justify-center">
+                        <p className="text-[20px] font-black italic leading-none tracking-tight mb-1">Iniciar Sesión</p>
+                        <p className="text-[13px] font-medium text-white/90 leading-tight">Acceso a red de asistentes.</p>
+                    </div>
                 </button>
 
                 <button
                     onClick={() => navigate('/signup')}
-                    className="w-full py-8 rounded-[2.5rem] bg-[#7C3AED]/10 text-[#7C3AED] font-black italic text-xl shadow-sm active:scale-[0.97] transition-all"
+                    className="w-full bg-[#9061F9] text-white p-7 py-8 rounded-[2.5rem] shadow-xl shadow-indigo-500/10 active:scale-[0.97] transition-all group text-left flex items-center gap-5 border-none italic"
                 >
-                    Unirse al equipo
+                    <div className="size-14 bg-white/20 rounded-2xl flex items-center justify-center text-white shrink-0 group-hover:scale-110 transition-transform">
+                        <span className="material-symbols-outlined text-3xl font-bold">person_add</span>
+                    </div>
+                    <div className="flex flex-col justify-center">
+                        <p className="text-[20px] font-black italic leading-none tracking-tight mb-1">Unirse al equipo</p>
+                        <p className="text-[13px] font-medium text-white/90 leading-tight">Postularme como nuevo asistente.</p>
+                    </div>
                 </button>
             </div>
 
-            <div className="absolute bottom-12 flex flex-col items-center gap-2 opacity-30">
+            <div className="mt-16 pb-12 flex flex-col items-center gap-2 opacity-30">
                 <p className="text-[10px] font-bold text-slate-500 tracking-[0.3em] uppercase">Cuidapp+ Partner v1.0 • 2026</p>
                 <div className="h-1 w-12 bg-primary/30 rounded-full"></div>
             </div>
