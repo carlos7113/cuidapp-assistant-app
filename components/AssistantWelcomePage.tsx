@@ -19,7 +19,7 @@ const AssistantWelcomePage: React.FC = () => {
             </div>
 
             <div className="z-10">
-                <p className="text-base italic font-medium text-slate-500 text-center leading-relaxed px-12 mb-12">
+                <p className="text-slate-500 font-bold italic text-base leading-tight max-w-[260px] mx-auto mb-12">
                     Gestiona acompañamientos, monitorea salud y genera bienestar en tiempo real.
                 </p>
             </div>
