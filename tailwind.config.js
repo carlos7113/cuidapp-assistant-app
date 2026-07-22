@@ -7,14 +7,20 @@ export default {
   theme: {
     extend: {
       colors: {
-        "primary": "#6C5CE7",
-        "secondary": "#0052CC",
-        "dark-blue": "#002D72",
-        "background": "#FFFFFF",
-        "sos-red": "#E74C3C",
+        'brand-blue': '#1E40AF',
+        'brand-lila': '#7C3AED',
+        'brand-gray': '#475569',
+        'brand-bg': '#FFFFFF',
+        'brand-surface': '#F8FAFC',
+        'sos-red': '#E74C3C',
+      },
+      borderRadius: {
+        'card': '2.5rem',
+        'button': '1.5rem',
       },
       fontFamily: {
-        "plus": ["Plus Jakarta Sans", "sans-serif"]
+        'sans': ['Inter', 'sans-serif'],
+        'logo': ['Plus Jakarta Sans', 'sans-serif'],
       }
     },
   },

@@ -5,16 +5,16 @@ const AssistantWelcomePage: React.FC = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="flex-1 bg-white font-plus flex flex-col px-6 pt-12 items-center justify-center text-center overflow-y-auto relative">
+        <div className="flex-1 bg-brand-bg font-sans flex flex-col px-6 pt-12 items-center justify-center text-center overflow-y-auto relative">
             {/* Background design accents */}
-            <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-primary/5 to-transparent"></div>
+            <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-brand-lila/5 to-transparent"></div>
             
             <div className="mb-14 relative z-10">
                 {/* Logo Section */}
-                <div className="size-20 bg-primary rounded-[2.2rem] flex items-center justify-center shadow-2xl shadow-primary/20 mx-auto mb-6 transform hover:scale-105 transition-transform duration-500">
+                <div className="size-20 bg-brand-lila rounded-[2.2rem] flex items-center justify-center shadow-2xl shadow-brand-lila/20 mx-auto mb-6 transform hover:scale-105 transition-transform duration-500">
                     <span className="material-symbols-outlined text-4xl text-white fill-1">shield_with_heart</span>
                 </div>
-                <h1 className="text-4xl font-black italic tracking-tighter text-primary mb-2">Cuidapp+</h1>
+                <h1 className="text-4xl font-logo text-brand-lila font-bold italic tracking-tighter mb-2">Cuidapp+</h1>
                 <p className="text-[10px] tracking-[0.3em] uppercase text-slate-400 font-black italic mt-1 mb-8">Assistant App</p>
             </div>
 
@@ -27,7 +27,7 @@ const AssistantWelcomePage: React.FC = () => {
             <div className="w-full max-w-sm relative z-10 space-y-4">
                 <button
                     onClick={() => navigate('/login')}
-                    className="w-full bg-[#7C3AED] text-white p-7 py-8 rounded-[2.5rem] shadow-xl shadow-primary/10 active:scale-[0.97] transition-all group text-left flex items-center gap-5 border-none italic"
+                    className="w-full bg-brand-lila text-white p-7 py-8 rounded-button shadow-xl shadow-brand-lila/10 active:scale-[0.97] transition-all group text-left flex items-center gap-5 border-none italic"
                 >
                     <div className="size-14 bg-white/20 rounded-2xl flex items-center justify-center text-white shrink-0 group-hover:scale-110 transition-transform">
                         <span className="material-symbols-outlined text-3xl font-bold">login</span>
@@ -40,7 +40,7 @@ const AssistantWelcomePage: React.FC = () => {
 
                 <button
                     onClick={() => navigate('/signup')}
-                    className="w-full bg-[#9061F9] text-white p-7 py-8 rounded-[2.5rem] shadow-xl shadow-indigo-500/10 active:scale-[0.97] transition-all group text-left flex items-center gap-5 border-none italic"
+                    className="w-full bg-brand-lila/80 text-white p-7 py-8 rounded-button shadow-xl shadow-brand-lila/10 active:scale-[0.97] transition-all group text-left flex items-center gap-5 border-none italic"
                 >
                     <div className="size-14 bg-white/20 rounded-2xl flex items-center justify-center text-white shrink-0 group-hover:scale-110 transition-transform">
                         <span className="material-symbols-outlined text-3xl font-bold">person_add</span>
@@ -54,7 +54,7 @@ const AssistantWelcomePage: React.FC = () => {
 
             <div className="mt-16 pb-12 flex flex-col items-center gap-2 opacity-30">
                 <p className="text-[10px] font-bold text-slate-500 tracking-[0.3em] uppercase">Cuidapp+ Partner v1.0 • 2026</p>
-                <div className="h-1 w-12 bg-primary/30 rounded-full"></div>
+                <div className="h-1 w-12 bg-brand-lila/30 rounded-full"></div>
             </div>
         </div>
     );

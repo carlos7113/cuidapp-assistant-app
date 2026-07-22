@@ -62,16 +62,16 @@ const AssistantLoginPage: React.FC = () => {
     };
 
     return (
-        <div className="flex-1 bg-white font-plus flex flex-col p-8 overflow-y-auto relative">
+        <div className="flex-1 bg-brand-bg font-sans flex flex-col p-8 overflow-y-auto relative">
             <div className="mb-12">
-                <h1 className="text-4xl font-black italic tracking-tighter text-primary mb-2">Acceso Asistente</h1>
+                <h1 className="text-4xl font-black italic tracking-tighter text-brand-blue mb-2">Acceso Asistente</h1>
                 <p className="text-slate-500 font-bold italic text-sm leading-tight uppercase tracking-[0.2em]">Selecciona tu perfil de la red</p>
             </div>
 
             {isLoading ? (
                 <div className="flex-1 flex flex-col items-center justify-center space-y-4">
-                    <div className="animate-spin size-10 border-4 border-primary border-t-transparent rounded-full"></div>
-                    <p className="text-xs font-bold text-primary italic uppercase tracking-widest animate-pulse">Sincronizando red...</p>
+                    <div className="animate-spin size-10 border-4 border-brand-lila border-t-transparent rounded-full"></div>
+                    <p className="text-xs font-bold text-brand-lila italic uppercase tracking-widest animate-pulse">Sincronizando red...</p>
                 </div>
             ) : assistants.length > 0 ? (
                 <div className="space-y-6">
@@ -79,7 +79,7 @@ const AssistantLoginPage: React.FC = () => {
                         <button
                             key={assistant.id}
                             onClick={() => handleSelectAssistant(assistant)}
-                            className="w-full bg-slate-50 border-2 border-slate-100 p-6 rounded-[2.5rem] flex items-center gap-5 active:scale-95 transition-all text-left shadow-sm hover:border-primary/30 group"
+                            className="w-full bg-brand-surface border-2 border-slate-100 p-6 rounded-card flex items-center gap-5 active:scale-95 transition-all text-left shadow-sm hover:border-brand-lila/30 group"
                         >
                             <div className="relative">
                                 <img 
@@ -90,13 +90,13 @@ const AssistantLoginPage: React.FC = () => {
                                 <div className="absolute -bottom-1 -right-1 size-5 rounded-full border-4 border-white bg-green-500 shadow-sm"></div>
                             </div>
                             <div className="flex-1">
-                                <h3 className="font-black text-xl text-primary leading-none mb-1">{assistant.name}</h3>
+                                <h3 className="font-black text-xl text-brand-blue leading-none mb-1">{assistant.name}</h3>
                                 <div className="flex items-center gap-1.5 opacity-60">
                                     <span className="material-symbols-outlined text-sm text-yellow-500 fill-1">star</span>
                                     <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">{assistant.role}</span>
                                 </div>
                             </div>
-                            <div className="size-10 bg-white rounded-2xl flex items-center justify-center text-primary/30 group-hover:text-primary transition-colors">
+                            <div className="size-10 bg-white rounded-2xl flex items-center justify-center text-brand-lila/30 group-hover:text-brand-lila transition-colors">
                                 <span className="material-symbols-outlined font-bold">arrow_forward</span>
                             </div>
                         </button>
@@ -112,10 +112,10 @@ const AssistantLoginPage: React.FC = () => {
             )}
 
             <div className="mt-auto pt-16 pb-8 flex flex-col items-center gap-6">
-                <div className="bg-primary/5 p-8 rounded-[2.5rem] border border-primary/10 text-center w-full max-w-[320px]">
-                    <p className="text-[10px] font-black text-primary/40 mb-3 uppercase tracking-[0.25em]">Portal de Colaboradores</p>
+                <div className="bg-brand-lila/5 p-8 rounded-card border border-brand-lila/10 text-center w-full max-w-[320px]">
+                    <p className="text-[10px] font-black text-brand-lila/40 mb-3 uppercase tracking-[0.25em]">Portal de Colaboradores</p>
                     <button 
-                        className="text-primary font-black italic text-lg hover:underline decoration-2 underline-offset-8"
+                        className="text-brand-lila font-black italic text-lg hover:underline decoration-2 underline-offset-8"
                         onClick={() => alert("Contacta con la administración central de Cuidapp+ para registro.")}
                     >
                         Solicitar alta en red

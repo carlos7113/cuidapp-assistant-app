@@ -69,6 +69,7 @@ const AssistantDashboardPage: React.FC = () => {
   const [showEarningsToast, setShowEarningsToast] = useState(false);
   const [showMedicalModal, setShowMedicalModal] = useState(false);
   const [lastEarnings, setLastEarnings] = useState('$0.00');
+  const [acceptingTripId, setAcceptingTripId] = useState<string | null>(null);
 
   // ── Leer identidad del asistente ──────────────────────────────────────────
   const loadAssistant = () => {
@@ -120,7 +121,7 @@ const AssistantDashboardPage: React.FC = () => {
     const { data, error } = await supabase
       .from('trips')
       .select('*')
-      .eq('status', 'pending')
+      .in('status', ['pending', 'web_lead'])
       .order('created_at', { ascending: false });
 
     if (!error && data) {
@@ -129,28 +130,33 @@ const AssistantDashboardPage: React.FC = () => {
   };
 
   const handleAcceptTrip = async (trip: any) => {
-    const assistantId = localStorage.getItem('cuidapp_active_assistant_id');
+    if (acceptingTripId) return; // Prevenir doble clic
+    setAcceptingTripId(trip.id);
+
+    const assistantData = assistant;
+    const assistantId = localStorage.getItem('cuidapp_active_assistant_id') || assistantData?.id || 'asst-web';
 
     const { error } = await supabase
       .from('trips')
       .update({
-        status: 'accepted',
+        status: 'arriving',
         assistant_id: assistantId,
-        assistant_name: assistant.name
+        assistant_name: assistantData?.name || 'Asistente Cuidapp+'
       })
       .eq('id', trip.id);
 
     if (error) {
-      alert("No se pudo aceptar el viaje: " + error.message);
+      alert('No se pudo aceptar el viaje: ' + error.message);
+      setAcceptingTripId(null);
       return;
     }
 
-    // Actualizar estado local
-    const mockTrip: TripData = {
+    // Actualizar estado local optimista
+    const activeTrip: TripData = {
       id: trip.id,
       status: 'arriving',
-      passengerName: trip.passenger_name,
-      destination: trip.destination,
+      passengerName: trip.passenger_name || trip.lead_name,
+      destination: trip.destination_name || trip.destination,
       serviceLevel: trip.service_level,
       price: trip.price,
       created_at: new Date().toISOString(),
@@ -162,9 +168,10 @@ const AssistantDashboardPage: React.FC = () => {
       isGuest: !!trip.lead_name
     };
 
-    localStorage.setItem('cuidapp_active_trip', JSON.stringify(mockTrip));
-    setActiveTrip(mockTrip);
+    localStorage.setItem('cuidapp_active_trip', JSON.stringify(activeTrip));
+    setActiveTrip(activeTrip);
     setPendingTrips(prev => prev.filter(t => t.id !== trip.id));
+    setAcceptingTripId(null);
   };
 
   useEffect(() => {
@@ -174,29 +181,36 @@ const AssistantDashboardPage: React.FC = () => {
 
     // Supabase Realtime Subscription
     const channel = supabase
-      .channel('public:trips')
+      .channel('public:trips:assistant-feed')
       .on(
         'postgres_changes',
         { event: 'INSERT', schema: 'public', table: 'trips', filter: 'status=eq.pending' },
         (payload) => {
-          console.log('📡 Nuevo viaje detectado:', payload.new);
-          setPendingTrips(prev => [payload.new, ...prev]);
+          const newTrip = payload.new as any;
+          console.log('📡 Nuevo viaje detectado en tiempo real:', newTrip);
+          setPendingTrips(prev => [newTrip, ...prev]);
         }
       )
       .on(
         'postgres_changes',
         { event: 'UPDATE', schema: 'public', table: 'trips' },
         (payload) => {
-          // Si el viaje ya no es 'pending' (alguien lo aceptó), lo quitamos de la lista
-          if (payload.new.status !== 'pending') {
-            setPendingTrips(prev => prev.filter(t => t.id !== payload.new.id));
+          // Si el viaje ya no es 'pending' ni 'web_lead', sacarlo del feed
+          const updated = payload.new as any;
+          if (updated.status !== 'pending' && updated.status !== 'web_lead') {
+            setPendingTrips(prev => prev.filter(t => t.id !== updated.id));
           }
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        console.log('📡 Canal Realtime Asistente:', status);
+      });
 
     window.addEventListener('storage', syncState);
-    const poll = setInterval(syncState, 5000);
+    const poll = setInterval(() => {
+      syncState();
+      loadPendingTrips();
+    }, 5000);
 
     return () => {
       supabase.removeChannel(channel);
@@ -206,8 +220,19 @@ const AssistantDashboardPage: React.FC = () => {
   }, []);
 
   // ── Actualizar estado del viaje ───────────────────────────────────────────
-  const handleUpdateStatus = (newStatus: string) => {
+  const handleUpdateStatus = async (newStatus: string) => {
     if (!activeTrip) return;
+
+    if (activeTrip.id) {
+      const { error } = await supabase
+        .from('trips')
+        .update({ status: newStatus })
+        .eq('id', activeTrip.id);
+      if (error) {
+        console.error('Error al actualizar el estado en Supabase:', error);
+        alert('Error al actualizar el estado en la base de datos: ' + error.message);
+      }
+    }
 
     if (newStatus === 'completed') {
       const price = activeTrip.price || 7.60;
@@ -564,43 +589,56 @@ const AssistantDashboardPage: React.FC = () => {
                         </div>
                       </div>
 
-                      {/* FICHA MÉDICA EXPRESS */}
-                      {(trip.lead_blood_type || trip.lead_allergies) && (
-                        <div className="bg-red-50/50 border border-red-100 p-4 rounded-2xl space-y-3">
-                           <div className="flex items-center gap-2">
-                             <span className="material-symbols-outlined text-sm text-red-500 font-bold">emergency_home</span>
-                             <p className="text-[10px] font-black text-red-500 uppercase tracking-widest italic">Ficha Médica Crítica</p>
-                           </div>
-                           <div className="grid grid-cols-2 gap-4">
-                              {trip.lead_blood_type && (
-                                <div>
-                                  <p className="text-[8px] font-black text-slate-400 uppercase">Sangre</p>
-                                  <p className="text-xs font-black text-[#002D72]">{trip.lead_blood_type}</p>
-                                </div>
-                              )}
-                              {trip.lead_allergies && (
-                                <div>
-                                  <p className="text-[8px] font-black text-slate-400 uppercase">Alergias</p>
-                                  <p className="text-xs font-black text-red-600">{trip.lead_allergies}</p>
-                                </div>
-                              )}
-                           </div>
-                           {trip.lead_medications && (
-                             <div>
-                               <p className="text-[8px] font-black text-slate-400 uppercase">Medicación</p>
-                               <p className="text-[10px] font-bold text-[#002D72] leading-tight mt-1">{trip.lead_medications}</p>
-                             </div>
-                           )}
+                      {/* FICHA MÉDICA EXPRESS — Obligatoria para leads de la Landing */}
+                      {(trip.lead_name || trip.lead_blood_type || trip.lead_allergies || trip.lead_medications) && (
+                        <div className="bg-red-50/70 border border-red-200 p-5 rounded-2xl space-y-4">
+                          <div className="flex items-center gap-2 pb-1 border-b border-red-100">
+                            <span className="material-symbols-outlined text-base text-red-500 font-bold">emergency_home</span>
+                            <p className="text-[10px] font-black text-red-600 uppercase tracking-widest italic">Ficha Médica Crítica</p>
+                            {trip.status === 'web_lead' && (
+                              <span className="ml-auto text-[8px] font-black bg-violet-100 text-violet-600 px-2 py-0.5 rounded-full uppercase tracking-wider">Lead Web</span>
+                            )}
+                          </div>
+                          <div className="grid grid-cols-2 gap-4">
+                            <div>
+                              <p className="text-[8px] font-black text-slate-400 uppercase tracking-wider mb-1">Tipo Sangre</p>
+                              <p className="text-sm font-black" style={{ color: BLUE }}>{trip.lead_blood_type || '—'}</p>
+                            </div>
+                            <div>
+                              <p className="text-[8px] font-black text-slate-400 uppercase tracking-wider mb-1">Alergias</p>
+                              <p className="text-sm font-black text-red-600">{trip.lead_allergies || 'Ninguna'}</p>
+                            </div>
+                          </div>
+                          <div>
+                            <p className="text-[8px] font-black text-slate-400 uppercase tracking-wider mb-1">Medicación Actual</p>
+                            <p className="text-xs font-bold leading-relaxed" style={{ color: BLUE }}>{trip.lead_medications || 'No especificada'}</p>
+                          </div>
+                          {trip.lead_needs && trip.lead_needs.length > 0 && (
+                            <div>
+                              <p className="text-[8px] font-black text-slate-400 uppercase tracking-wider mb-1">Requerimientos</p>
+                              <p className="text-xs font-bold text-violet-700 leading-relaxed">{trip.lead_needs.join(' · ')}</p>
+                            </div>
+                          )}
                         </div>
                       )}
 
                       <button
                         onClick={() => handleAcceptTrip(trip)}
-                        style={{ backgroundColor: BLUE }}
-                        className="w-full text-white py-5 rounded-[2rem] font-black italic text-lg shadow-lg active:scale-95 transition-all flex items-center justify-center gap-3"
+                        disabled={acceptingTripId === trip.id}
+                        style={{ backgroundColor: acceptingTripId === trip.id ? '#93C5FD' : BLUE }}
+                        className="w-full text-white py-5 rounded-[2rem] font-black italic text-lg shadow-lg active:scale-95 transition-all flex items-center justify-center gap-3 disabled:cursor-not-allowed disabled:active:scale-100"
                       >
-                        Aceptar Viaje
-                        <span className="material-symbols-outlined">arrow_forward</span>
+                        {acceptingTripId === trip.id ? (
+                          <>
+                            <div className="size-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                            Aceptando...
+                          </>
+                        ) : (
+                          <>
+                            Aceptar Viaje
+                            <span className="material-symbols-outlined">arrow_forward</span>
+                          </>
+                        )}
                       </button>
                     </div>
                   ))}
