@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Header } from './Layout';
+import { tripRealtimeService } from '../src/services/tripRealtimeService';
 
 interface MemberData {
     name: string;
@@ -40,18 +41,17 @@ const FamilyDashboardPage: React.FC = () => {
         const tripSaved = localStorage.getItem('cuidapp_active_trip');
         if (tripSaved) setActiveTrip(JSON.parse(tripSaved));
 
-        // Partner/Family synchronization via BroadcastChannel
-        const channel = new BroadcastChannel('cuidapp_trip_channel');
-        channel.onmessage = (event) => {
-            if (event.data && event.data.type === 'NEW_TRIP_REQUEST') {
-                const updatedTrip = { ...event.data, status: 'arriving' };
+        // Partner/Family synchronization via Supabase Realtime Channels
+        const unsubscribe = tripRealtimeService.subscribeToTrips((payload) => {
+            if (payload.type === 'NEW_TRIP_REQUEST' || payload.type === 'TRIP_ACCEPTED') {
+                const updatedTrip = { ...payload.data, status: 'arriving' };
                 setActiveTrip(updatedTrip);
                 localStorage.setItem('cuidapp_active_trip', JSON.stringify(updatedTrip));
             }
-        };
+        });
 
         return () => {
-            channel.close();
+            unsubscribe();
         };
     }, []);
 

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Header } from './Layout';
 import { supabase } from '../lib/supabaseClient';
+import { tripRealtimeService } from '../src/services/tripRealtimeService';
 
 interface Destination {
     name: string;
@@ -390,18 +391,13 @@ const TripBookingPage: React.FC = () => {
         localStorage.setItem('cuidapp_active_trip', JSON.stringify(activeTrip));
         localStorage.setItem('cuidapp_user_name', 'Carlos Soto');
 
-        // Notificar a la App Azul (puerto 3001) via BroadcastChannel
-        const channel = new BroadcastChannel('cuidapp_trip_channel');
-        channel.postMessage({
-            type: 'NEW_TRIP',
-            data: {
-                pasajero: 'Carlos Soto',
-                necesidad: 'Silla de ruedas',
-                bono: '$2.50',
-                ...activeTrip // Mantenemos el resto para compatibilidad
-            }
+        // Notificar a la App Asistente / Flota via Supabase Realtime Channels
+        tripRealtimeService.broadcastTripRequest({
+            pasajero: 'Carlos Soto',
+            necesidad: 'Silla de ruedas',
+            bono: '$2.50',
+            ...activeTrip
         });
-        channel.close();
 
         navigate('/active-trip');
     };
